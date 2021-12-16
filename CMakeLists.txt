@@ -3,4 +3,8 @@ project(chip8)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(chip8 main.cpp emulator.cpp emulator.h)
+add_subdirectory(vendor/gflags)
+
+add_executable(${CMAKE_PROJECT_NAME} main.cpp)
+
+target_link_libraries(chip8 gflags)
