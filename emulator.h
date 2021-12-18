@@ -4,15 +4,18 @@
 #ifndef CHIP8_EMULATOR_H
 #define CHIP8_EMULATOR_H
 
+#include "core/cpu.h"
 #include "core/rom.h"
 
 namespace c8 {
 
 class Emulator {
 public:
-    void Reset();
-    void LoadRom(const c8::Rom& rom);
+    void LoadRom(Rom* rom);
     void Start();
+
+private:
+    Cpu cpu;
 };
 
 }

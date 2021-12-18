@@ -3,8 +3,13 @@
 
 #include "emulator.h"
 
-void c8::Emulator::Reset() {}
+using namespace c8;
 
-void c8::Emulator::LoadRom(const c8::Rom &rom) {}
+void Emulator::LoadRom(Rom* rom) {
+    cpu.Reset();
+    cpu.ReadProgram(rom->Data());
+}
 
-void c8::Emulator::Start() {}
+void Emulator::Start() {
+    // TODO: implement
+}
