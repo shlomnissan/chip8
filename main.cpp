@@ -2,26 +2,34 @@
 #include <string_view>
 #include <gflags/gflags.h>
 
-const auto valid_path_message = "Specify a path to a valid Chip-8 program";
-DEFINE_string(rom, "", valid_path_message);
+#include "emulator.h"
+#include "core/rom.h"
 
-bool validateRom(std::string_view value) {
-    return !value.empty();
-}
+const auto kValidPathMessage = "Specify a path to a valid Chip-8 program";
+const auto kValidRomMessage = "Unable to read Chip-8 program";
+
+DEFINE_string(rom, "", kValidPathMessage);
 
 int main(int argc, char** argv) {
     gflags::SetUsageMessage("chip8 -rom <PATH>");
     gflags::SetVersionString("1.0.0");
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-    if (!validateRom(FLAGS_rom)) {
-        std::cerr << valid_path_message << "\n" << "Usage: chip8 -rom <PATH>\n";
+    if (FLAGS_rom.empty()) {
+        std::cerr << kValidPathMessage << "\n" << "Usage: chip8 -rom <PATH>\n";
         return EXIT_FAILURE;
     }
 
-    // TODO: instantiate emulator
-    // TODO: load rom
-    // TODO: run
+    c8::Rom rom;
+    if (!rom.WithFile(FLAGS_rom)) {
+        std::cerr << kValidRomMessage << '\n';
+        return EXIT_FAILURE;
+    }
+
+    c8::Emulator emulator;
+    emulator.Reset();
+    emulator.LoadRom(rom);
+    emulator.Start();
 
     return EXIT_SUCCESS;
 }
