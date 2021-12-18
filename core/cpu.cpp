@@ -2,6 +2,7 @@
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
 #include "cpu.h"
+#include <iostream>
 
 void c8::Cpu::Reset() {
     registers = {0};
@@ -12,10 +13,9 @@ void c8::Cpu::Reset() {
     t_delay = 0;
     t_sound = 0;
 
-    // TODO: reset memory
-    // TODO: load sprites
+    ram.Reset();
 }
 
-void c8::Cpu::ReadProgram(const std::vector<char> &data) {
-    // TODO: read program into memory
+void c8::Cpu::ReadProgram(const std::vector<char> &buffer) {
+    ram.SaveProgram(buffer.data(), buffer.size());
 }

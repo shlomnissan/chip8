@@ -9,6 +9,7 @@ set(HEADERS
     emulator.h
     core/cpu.h
     core/rom.h
+    core/memory.h
 )
 
 set(SOURCES
@@ -16,6 +17,7 @@ set(SOURCES
     emulator.cpp
     core/cpu.cpp
     core/rom.cpp
+    core/memory.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})

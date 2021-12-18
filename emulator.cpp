@@ -10,6 +10,4 @@ void Emulator::LoadRom(const Rom& rom) {
     cpu.ReadProgram(rom.Data());
 }
 
-void Emulator::Start() {
-    // TODO: implement
-}
+void Emulator::Start() {}
