@@ -5,6 +5,19 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(vendor/gflags)
 
-add_executable(${CMAKE_PROJECT_NAME} main.cpp core/rom.cpp core/rom.h emulator.cpp emulator.h core/cpu.h core/cpu.cpp core/cpu.h)
+set(HEADERS
+    emulator.h
+    core/cpu.h
+    core/rom.h
+)
+
+set(SOURCES
+    main.cpp
+    emulator.cpp
+    core/cpu.cpp
+    core/rom.cpp
+)
+
+add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 
 target_link_libraries(chip8 gflags)
