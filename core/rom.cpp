@@ -3,6 +3,8 @@
 
 #include "rom.h"
 
+#include <sstream>
+
 using namespace c8;
 
 bool Rom::WithFile(std::string_view filename) {
@@ -17,11 +19,11 @@ bool Rom::WithFile(std::string_view filename) {
     return true;
 }
 
-std::vector<char> Rom::Data() {
-    return {
-        std::istreambuf_iterator<char>(stream),
-        std::istreambuf_iterator<char>()
-    };
+std::vector<char> Rom::Data() const {
+    std::ostringstream ss;
+    ss << stream.rdbuf();
+    auto str = ss.str();
+    return { str.begin(), str.end() };
 }
 
 long Rom::GetSize(std::ifstream* s_ptr) {

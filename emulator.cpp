@@ -5,9 +5,9 @@
 
 using namespace c8;
 
-void Emulator::LoadRom(Rom* rom) {
+void Emulator::LoadRom(const Rom& rom) {
     cpu.Reset();
-    cpu.ReadProgram(rom->Data());
+    cpu.ReadProgram(rom.Data());
 }
 
 void Emulator::Start() {

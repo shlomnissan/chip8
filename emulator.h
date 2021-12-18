@@ -11,7 +11,7 @@ namespace c8 {
 
 class Emulator {
 public:
-    void LoadRom(Rom* rom);
+    void LoadRom(const Rom& rom);
     void Start();
 
 private:

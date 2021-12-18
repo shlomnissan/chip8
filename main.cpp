@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     }
 
     c8::Emulator emulator;
-    emulator.LoadRom(&rom);
+    emulator.LoadRom(rom);
     emulator.Start();
 
     return EXIT_SUCCESS;
