@@ -12,11 +12,9 @@ namespace c8 {
 
 class SDL : public Client {
 public:
-    [[nodiscard]] bool Initialize(int width, int height) override;
+    [[nodiscard]] bool Initialize(int width, int height, std::string_view title) override;
     void PollEvents() override;
     void Draw() override;
-
-    bool running = false;
 
     ~SDL() override;
 

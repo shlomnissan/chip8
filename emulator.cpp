@@ -2,12 +2,15 @@
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
 #include "emulator.h"
-#include "core/display.h"
 
 using namespace c8;
 
-bool Emulator::Initialize() {
-    return client->Initialize(Display::width(), Display::height());
+bool Emulator::Initialize() const {
+    return client->Initialize(
+        Display::width(),
+        Display::height(),
+        "Chip 8"
+    );
 }
 
 void Emulator::LoadRom(const Rom& rom) {
@@ -16,5 +19,7 @@ void Emulator::LoadRom(const Rom& rom) {
 }
 
 void Emulator::Start() {
-    // TODO: while(cpu.ProgramLoaded())
+    while (cpu.ProgramLoaded() && client->running) {
+        client->PollEvents();
+    }
 }
