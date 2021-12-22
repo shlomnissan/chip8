@@ -5,9 +5,16 @@
 
 using namespace c8;
 
+bool Emulator::Initialize() {
+    // TODO: initialize window
+    return true;
+}
+
 void Emulator::LoadRom(const Rom& rom) {
     cpu.Reset();
     cpu.ReadProgram(rom.Data());
 }
 
-void Emulator::Start() {}
+void Emulator::Start() {
+    // TODO: while(cpu.ProgramLoaded())
+}

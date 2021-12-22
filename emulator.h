@@ -11,6 +11,7 @@ namespace c8 {
 
 class Emulator {
 public:
+    [[nodiscard]] bool Initialize();
     void LoadRom(const Rom& rom);
     void Start();
 

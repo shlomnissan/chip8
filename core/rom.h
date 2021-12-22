@@ -11,11 +11,11 @@
 
 namespace c8 {
 
-// 0xDFF = 3,583 = 4,095 (Chip8 RAM) - 512 (Reserved RAM)
-const int kMaxRomFileSize = 0xDFF;
-
 class Rom {
 public:
+    // 0xDFF = 3,583 = 4,095 (Chip8 RAM) - 512 (Reserved RAM)
+    static constexpr int kMaxRomFileSize = 0xDFF;
+
     ~Rom();
 
     [[nodiscard]] bool WithFile(std::string_view filename);

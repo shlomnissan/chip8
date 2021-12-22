@@ -4,18 +4,26 @@
 #include "cpu.h"
 #include <iostream>
 
-void c8::Cpu::Reset() {
+using namespace c8;
+
+void Cpu::Reset() {
+    ram.Reset();
+    program_loaded = false;
+
     registers = {0};
     stack = {0};
     I = 0;
-    pc = kStartAddress;
+    pc = Memory::kStartAddress;
     sp = 0;
     t_delay = 0;
     t_sound = 0;
-
-    ram.Reset();
 }
 
-void c8::Cpu::ReadProgram(const std::vector<char> &buffer) {
+void Cpu::ReadProgram(const std::vector<char> &buffer) {
     ram.SaveProgram(buffer.data(), buffer.size());
+    program_loaded = true;
+}
+
+bool Cpu::ProgramLoaded() const {
+    return program_loaded;
 }

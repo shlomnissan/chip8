@@ -7,6 +7,7 @@
 
 const auto kInvalidPathMessage = "Specify a path to a valid Chip-8 program";
 const auto kInvalidRomMessage = "Unable to read Chip-8 program";
+const auto kFailedToInit = "Unable to initialize window";
 
 DEFINE_string(rom, "", kInvalidPathMessage);
 
@@ -27,6 +28,11 @@ int main(int argc, char** argv) {
     }
 
     c8::Emulator emulator;
+    if (!emulator.Initialize()) {
+        std::cerr << kFailedToInit << '\n';
+        return EXIT_FAILURE;
+    }
+
     emulator.LoadRom(rom);
     emulator.Start();
 
