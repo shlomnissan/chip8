@@ -5,7 +5,7 @@
 #include "emulator.h"
 #include "core/rom.h"
 
-const auto kInvalidPathMessage = "Specify a path to a valid Chip-8 program";
+const auto kInvalidPathMessage = "Specif a path to a valid Chip-8 program";
 const auto kInvalidRomMessage = "Unable to read Chip-8 program";
 const auto kFailedToInit = "Unable to initialize window";
 

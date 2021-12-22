@@ -1,3 +1,6 @@
 [submodule "vendor/gflags"]
 	path = vendor/gflags
 	url = https://github.com/gflags/gflags.git
+[submodule "vendor/SDL"]
+	path = vendor/SDL
+	url = https://github.com/libsdl-org/SDL.git

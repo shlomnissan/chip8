@@ -2,12 +2,12 @@
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
 #include "emulator.h"
+#include "core/display.h"
 
 using namespace c8;
 
 bool Emulator::Initialize() {
-    // TODO: initialize window
-    return true;
+    return client->Initialize(Display::width(), Display::height());
 }
 
 void Emulator::LoadRom(const Rom& rom) {

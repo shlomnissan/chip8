@@ -4,8 +4,11 @@
 #ifndef CHIP8_EMULATOR_H
 #define CHIP8_EMULATOR_H
 
+#include <memory>
+
 #include "core/cpu.h"
 #include "core/rom.h"
+#include "clients/sdl/sdl.h"
 
 namespace c8 {
 
@@ -17,6 +20,8 @@ public:
 
 private:
     Cpu cpu;
+
+    std::unique_ptr<Client> client = std::make_unique<SDL>();
 };
 
 }
