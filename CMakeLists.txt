@@ -8,6 +8,7 @@ add_subdirectory(vendor/SDL)
 
 set(HEADERS
     emulator.h
+    messages.h
     core/cpu.h
     core/rom.h
     core/display.h

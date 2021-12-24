@@ -4,12 +4,9 @@
 
 #include "emulator.h"
 #include "core/rom.h"
+#include "messages.h"
 
-const auto kInvalidPathMessage = "Specif a path to a valid Chip-8 program";
-const auto kInvalidRomMessage = "Unable to read Chip-8 program";
-const auto kFailedToInit = "Unable to initialize window";
-
-DEFINE_string(rom, "", kInvalidPathMessage);
+DEFINE_string(rom, "", c8::Message::InvalidPath);
 
 int main(int argc, char** argv) {
     gflags::SetUsageMessage("chip8 -rom <PATH>");
@@ -17,19 +14,19 @@ int main(int argc, char** argv) {
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     if (FLAGS_rom.empty()) {
-        std::cerr << kInvalidPathMessage << "\n" << "Usage: chip8 -rom <PATH>\n";
+        std::cerr << c8::Message::InvalidPath << "\n" << "Usage: chip8 -rom <PATH>\n";
         return EXIT_FAILURE;
     }
 
     c8::Rom rom;
     if (!rom.WithFile(FLAGS_rom)) {
-        std::cerr << kInvalidRomMessage << '\n';
+        std::cerr << c8::Message::InvalidRom << '\n';
         return EXIT_FAILURE;
     }
 
     c8::Emulator emulator;
     if (!emulator.Initialize()) {
-        std::cerr << kFailedToInit << '\n';
+        std::cerr << c8::Message::FailedToInit << '\n';
         return EXIT_FAILURE;
     }
 
