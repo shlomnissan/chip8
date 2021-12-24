@@ -9,21 +9,20 @@
 #include "core/cpu.h"
 #include "core/rom.h"
 #include "core/display.h"
-#include "clients/sdl/sdl.h"
+#include "os/window.h"
 
 namespace c8 {
 
 class Emulator {
 public:
-    [[nodiscard]] bool Initialize() const;
+    [[nodiscard]] bool Initialize();
     void LoadRom(const Rom& rom);
     void Start();
 
 private:
     Cpu cpu;
     Display display;
-
-    std::unique_ptr<Client> client = std::make_unique<SDL>();
+    Window window;
 };
 
 }

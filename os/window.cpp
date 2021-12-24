@@ -1,11 +1,11 @@
 // Copyright 2021 Betamark Pty Ltd. All rights reserved.
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
-#include "sdl.h"
+#include "window.h"
 
 using namespace c8;
 
-bool SDL::Initialize(int width, int height, std::string_view title) {
+bool Window::Initialize(int width, int height, std::string_view title) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         return false;
     }
@@ -18,7 +18,7 @@ bool SDL::Initialize(int width, int height, std::string_view title) {
     return true;
 }
 
-void SDL::PollEvents() {
+void Window::PollEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
@@ -27,11 +27,11 @@ void SDL::PollEvents() {
     }
 }
 
-void SDL::Draw() {
+void Window::Draw() {
 
 }
 
-SDL::~SDL() {
+Window::~Window() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();

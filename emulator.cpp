@@ -5,8 +5,8 @@
 
 using namespace c8;
 
-bool Emulator::Initialize() const {
-    return client->Initialize(
+bool Emulator::Initialize() {
+    return window.Initialize(
         Display::width(),
         Display::height(),
         "Chip 8"
@@ -19,7 +19,7 @@ void Emulator::LoadRom(const Rom& rom) {
 }
 
 void Emulator::Start() {
-    while (cpu.ProgramLoaded() && client->running) {
-        client->PollEvents();
+    while (cpu.ProgramLoaded() && window.running) {
+        window.PollEvents();
     }
 }

@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cinttypes>
+#include <string_view>
 
 namespace c8 {
 
@@ -36,7 +37,7 @@ public:
     uint8_t& operator[](int index);
 
     void Reset();
-    void SaveProgram(const char *source, std::size_t size);
+    void SaveProgram(std::string_view source);
 private:
     std::array<uint8_t, 0x1000> memory = {0};
 };

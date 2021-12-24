@@ -2,7 +2,6 @@
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
 #include "cpu.h"
-#include <iostream>
 
 using namespace c8;
 
@@ -20,7 +19,7 @@ void Cpu::Reset() {
 }
 
 void Cpu::ReadProgram(const std::vector<char> &buffer) {
-    ram.SaveProgram(buffer.data(), buffer.size());
+    ram.SaveProgram(buffer.data());
     program_loaded = true;
 }
 

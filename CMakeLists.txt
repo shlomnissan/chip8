@@ -12,8 +12,7 @@ set(HEADERS
     core/rom.h
     core/display.h
     core/memory.h
-    clients/client.h
-    clients/sdl/sdl.h
+    os/window.h
 )
 
 set(SOURCES
@@ -22,7 +21,7 @@ set(SOURCES
     core/cpu.cpp
     core/rom.cpp
     core/memory.cpp
-    clients/sdl/sdl.cpp
+    os/window.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})

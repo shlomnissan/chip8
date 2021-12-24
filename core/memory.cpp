@@ -3,13 +3,13 @@
 
 #include "memory.h"
 
-#include <cstring>
 #include <stdexcept>
+#include <algorithm>
 
 using namespace c8;
 
 Memory::Memory() {
-    memcpy(memory.data(), kSprites.data(), kSprites.size());
+    std::ranges::copy(begin(kSprites), end(kSprites), begin(memory));
 }
 
 uint8_t &Memory::operator[](int index) {
@@ -19,10 +19,10 @@ uint8_t &Memory::operator[](int index) {
     return memory[index];
 }
 
-void Memory::SaveProgram(const char* source, std::size_t size) {
-    memcpy(memory.data() + kStartAddress, source, size);
+void Memory::SaveProgram(std::string_view source) {
+    std::ranges::copy(begin(source), end(source), begin(memory) + kStartAddress);
 }
 
 void Memory::Reset() {
-    memset(memory.data() + kStartAddress, 0, memory.size() - kStartAddress);
+    std::fill(begin(memory) + kStartAddress, end(memory), 0);
 }
