@@ -10,6 +10,7 @@ set(HEADERS
     emulator.h
     messages.h
     core/cpu.h
+    core/chip8.h
     core/rom.h
     core/display.h
     core/memory.h
@@ -19,11 +20,11 @@ set(HEADERS
 set(SOURCES
     main.cpp
     emulator.cpp
-    core/cpu.cpp
+    core/chip8.cpp
     core/rom.cpp
     core/memory.cpp
     os/window.cpp
-)
+        core/instructions.h)
 
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 

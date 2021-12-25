@@ -19,7 +19,7 @@ public:
     ~Rom();
 
     [[nodiscard]] bool WithFile(std::string_view filename);
-    std::vector<char> Data() const;
+    std::string Data() const;
 
 private:
     std::ifstream stream;

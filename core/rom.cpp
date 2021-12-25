@@ -19,11 +19,10 @@ bool Rom::WithFile(std::string_view filename) {
     return true;
 }
 
-std::vector<char> Rom::Data() const {
+std::string Rom::Data() const {
     std::ostringstream ss;
     ss << stream.rdbuf();
-    auto str = ss.str();
-    return { str.begin(), str.end() };
+    return ss.str();
 }
 
 long Rom::GetSize(std::ifstream* s_ptr) {

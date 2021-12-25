@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#include "core/cpu.h"
+#include "core/chip8.h"
 #include "core/rom.h"
 #include "core/display.h"
 #include "os/window.h"
@@ -20,7 +20,7 @@ public:
     void Start();
 
 private:
-    Cpu cpu;
+    Chip8 cpu;
     Display display;
     Window window;
 };

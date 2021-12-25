@@ -21,5 +21,6 @@ void Emulator::LoadRom(const Rom& rom) {
 void Emulator::Start() {
     while (cpu.ProgramLoaded() && window.running) {
         window.PollEvents();
+        cpu.Tick();
     }
 }
