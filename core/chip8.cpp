@@ -29,6 +29,28 @@ bool Chip8::ProgramLoaded() const {
 }
 
 void Chip8::Tick() {
-    auto in = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
-    auto opcode = in >> 12;
+    uint16_t in = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
+    cpu.pc += 2;
+
+    switch (in >> 12) {
+        case 0x0000:
+            switch(in & 0x00FF) {
+                case 0xE0: // 00E0
+                    instruction::OP_CLS(&display);
+                    break;
+                case 0xEE: // 00EE
+                    instruction::OP_RET(&cpu);
+                    break;
+            }
+            break;
+        case 0x1000:
+            instruction::OP_JP(in, &cpu);
+            break;
+        case 0x2000:
+            instruction::OP_CALL(in, &cpu);
+            break;
+        case 0x3000:
+            instruction::OP_SE_BYTE(in, &cpu);
+            break;
+    }
 }
