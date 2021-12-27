@@ -11,7 +11,7 @@
 using namespace c8;
 
 Memory::Memory() {
-    std::ranges::copy(begin(kSprites), end(kSprites), begin(memory));
+    std::copy(begin(kSprites), end(kSprites), begin(memory));
 }
 
 uint8_t &Memory::operator[](int index) {
@@ -19,7 +19,7 @@ uint8_t &Memory::operator[](int index) {
 }
 
 void Memory::SaveProgram(std::string_view source) {
-    std::ranges::copy(begin(source), end(source), begin(memory) + kStartAddress);
+    std::copy(begin(source), end(source), begin(memory) + kStartAddress);
 }
 
 void Memory::Reset() {
