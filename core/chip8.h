@@ -9,6 +9,7 @@
 
 #include "cpu.h"
 #include "memory.h"
+#include "display.h"
 
 namespace c8 {
 
@@ -23,6 +24,7 @@ public:
 private:
     Cpu cpu;
     Memory ram;
+    Display display;
 
     bool program_loaded = false;
 };

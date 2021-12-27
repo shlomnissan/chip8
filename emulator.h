@@ -20,9 +20,12 @@ public:
     void Start();
 
 private:
-    Chip8 cpu;
+    Chip8 chip8;
     Display display;
     Window window;
+
+    void Update();
+    void Draw();
 };
 
 }

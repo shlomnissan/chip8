@@ -13,11 +13,13 @@ class Window {
 public:
     bool running = false;
 
+    ~Window();
+
     [[nodiscard]] bool Initialize(int width, int height, std::string_view title);
     void PollEvents();
-    void Draw();
-
-    ~Window();
+    void PresentBackBuffer();
+    void ClearScreen();
+    void DrawBlock(int x, int y, int scale);
 
 private:
     SDL_Window* window = nullptr;

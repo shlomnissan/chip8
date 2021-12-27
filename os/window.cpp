@@ -27,8 +27,20 @@ void Window::PollEvents() {
     }
 }
 
-void Window::Draw() {
+void Window::PresentBackBuffer() {
+    SDL_RenderPresent(renderer);
+}
 
+void Window::ClearScreen() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+    SDL_RenderClear(renderer);
+}
+
+void Window::DrawBlock(int x, int y, int scale) {
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_Rect block {x * scale, y * scale, scale, scale};
+    SDL_RenderDrawRect(renderer, &block);
+    SDL_RenderFillRect(renderer, &block);
 }
 
 Window::~Window() {

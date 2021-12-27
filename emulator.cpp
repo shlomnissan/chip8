@@ -14,13 +14,32 @@ bool Emulator::Initialize() {
 }
 
 void Emulator::LoadRom(const Rom& rom) {
-    cpu.Reset();
-    cpu.ReadProgram(rom.Data());
+    chip8.Reset();
+    chip8.ReadProgram(rom.Data());
 }
 
 void Emulator::Start() {
-    while (cpu.ProgramLoaded() && window.running) {
-        window.PollEvents();
-        cpu.Tick();
+    while (chip8.ProgramLoaded() && window.running) {
+        Update();
+        Draw();
     }
+}
+
+void Emulator::Update() {
+    window.PollEvents();
+    chip8.Tick();
+}
+
+void Emulator::Draw() {
+    window.ClearScreen();
+
+    for (int y = 0; y < Display::kHeight; ++y) {
+        for (int x = 0; x < Display::kWidth; ++x) {
+            if (display[x + (y * Display::kWidth)]) {
+                window.DrawBlock(x, y, Display::kScale);
+            }
+        }
+    }
+
+    window.PresentBackBuffer();
 }

@@ -15,10 +15,7 @@ Memory::Memory() {
 }
 
 uint8_t &Memory::operator[](int index) {
-    if (index < 0 || index >= 0x1000) {
-        throw std::range_error(message::MemoryRangeError);
-    }
-    return memory[index];
+    return memory.at(index);
 }
 
 void Memory::SaveProgram(std::string_view source) {

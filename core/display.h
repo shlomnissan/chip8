@@ -5,6 +5,7 @@
 #define CHIP8_DISPLAY_H
 
 #include <array>
+#include <vector>
 #include <cinttypes>
 #include <algorithm>
 #include <stdexcept>
@@ -15,26 +16,23 @@ namespace c8 {
 
 class Display {
 public:
-    [[nodiscard]] static constexpr int width() { return kWidth * kScale; }
-    [[nodiscard]] static constexpr int height() { return kHeight * kScale; }
-
-    void ClearScreen() {
-        std::fill(begin(display), end(display), 0);
-    }
-
-    uint8_t& operator[](int index) {
-        if (index < 0 || index >= kWidth * kHeight) {
-            throw std::range_error(message::DisplayRangeError);
-        }
-        return display[index];
-    }
-
-private:
     static constexpr int kWidth = 64;
     static constexpr int kHeight = 32;
     static constexpr int kScale = 10;
 
-    std::array<uint8_t, kWidth * kHeight> display = {0};
+    [[nodiscard]] static constexpr int width() { return kWidth * kScale; }
+    [[nodiscard]] static constexpr int height() { return kHeight * kScale; }
+
+    void ClearScreen() {
+        std::fill(begin(data), end(data), 0);
+    }
+
+    uint8_t& operator[](int index) {
+        return data.at(index);
+    }
+
+private:
+    std::array<uint8_t, kWidth * kHeight> data = {0};
 };
 
 }
