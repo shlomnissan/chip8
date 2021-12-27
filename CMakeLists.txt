@@ -24,7 +24,8 @@ set(SOURCES
     core/rom.cpp
     core/memory.cpp
     os/window.cpp
-        core/instructions.h)
+    core/instructions.h
+)
 
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 

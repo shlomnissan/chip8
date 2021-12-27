@@ -3,10 +3,7 @@
 
 #include "memory.h"
 
-#include <stdexcept>
 #include <algorithm>
-
-#include "../messages.h"
 
 using namespace c8;
 
