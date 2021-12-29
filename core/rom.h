@@ -24,8 +24,6 @@ public:
 private:
     std::ifstream stream;
     long stream_size = 0;
-
-    long GetSize(std::ifstream* s_ptr);
 };
 
 }
