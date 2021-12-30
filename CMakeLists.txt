@@ -2,9 +2,14 @@ cmake_minimum_required(VERSION 3.21)
 project(chip8)
 
 set(CMAKE_CXX_STANDARD 17)
+set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+enable_testing()
 
 add_subdirectory(vendor/gflags)
 add_subdirectory(vendor/SDL)
+add_subdirectory(vendor/googletest)
+add_subdirectory(tests)
 
 set(HEADERS
     emulator.h
