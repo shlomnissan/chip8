@@ -52,5 +52,17 @@ void Chip8::Tick() {
         case 0x3000:
             instruction::OP_SE_BYTE(in, &cpu);
             break;
+        case 0x4000:
+            instruction::OP_SNE_BYTE(in, &cpu);
+            break;
+        case 0x5000:
+            instruction::OP_SN_XY(in, &cpu);
+            break;
+        case 0x6000:
+            instruction::LD_VX_BYTE(in, &cpu);
+            break;
+        case 0x7000:
+            instruction::ADD_VX_BYTE(in, &cpu);
+            break;
     }
 }

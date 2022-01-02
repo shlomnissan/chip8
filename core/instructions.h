@@ -10,41 +10,63 @@
 namespace c8::instruction {
 
 uint16_t GetAddress(int in) { return in & 0x0FFF; }
+
 uint16_t GetByte(int in) { return (in & 0x00FF); }
+
 uint16_t GetX(int in) { return (in & 0x0F00) >> 8; }
+
 uint16_t GetY(int in) { return (in & 0x00F0) >> 4; }
 
 // 00E0 - Clear screen
-void OP_CLS(Display* display) {
+void OP_CLS(Display *display) {
     display->ClearScreen();
 }
 
 // 00EE - Return from a subroutine
-void OP_RET(Cpu* cpu) {
-   cpu->pc = cpu->stack[--cpu->sp];
+void OP_RET(Cpu *cpu) {
+    cpu->pc = cpu->stack[--cpu->sp];
 }
 
 // 1nnn - Jump to address nnn
-void OP_JP(uint16_t in, Cpu* cpu) {
+void OP_JP(uint16_t in, Cpu *cpu) {
     cpu->pc = GetAddress(in);
 }
 
 // 2nnn - Call subroutine at address nnn
-void OP_CALL(uint16_t in, Cpu* cpu) {
+void OP_CALL(uint16_t in, Cpu *cpu) {
     cpu->stack[cpu->sp++] = cpu->pc;
     cpu->pc = GetAddress(in);
 }
 
 // 3xkk - Skip next instruction if V[x] == kk
-void OP_SE_BYTE(uint16_t in, Cpu* cpu) {
+void OP_SE_BYTE(uint16_t in, Cpu *cpu) {
     if (cpu->registers[GetX(in)] == GetByte(in)) {
         cpu->pc += 2;
     }
 }
 
-// Annn - Load address nnn to register I
-void OP_LD_I(uint16_t in, Cpu* cpu) {
-    cpu->I = GetAddress(in);
+// 4xkk - Skip next instruction if V[x] != kk
+void OP_SNE_BYTE(uint16_t in, Cpu *cpu) {
+    if (cpu->registers[GetX(in)] != GetByte(in)) {
+        cpu->pc += 2;
+    }
+}
+
+// 5xy0 - Skip next instruction if Vx = Vy
+void OP_SN_XY(uint16_t in, Cpu *cpu) {
+    if (cpu->registers[GetX(in)] == cpu->registers[GetY(in)]) {
+        cpu->pc += 2;
+    }
+}
+
+// 6xkk - Puts the value kk into register Vx.
+void LD_VX_BYTE(uint16_t in, Cpu *cpu) {
+    cpu->registers[GetX(in)] = GetByte(in);
+}
+
+// 7xkk - Adds the value kk to the value of register Vx
+void ADD_VX_BYTE(uint16_t in, Cpu *cpu) {
+    cpu->registers[GetX(in)] += GetByte(in);
 }
 
 }
