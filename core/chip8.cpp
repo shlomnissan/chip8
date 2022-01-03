@@ -29,40 +29,71 @@ bool Chip8::ProgramLoaded() const {
 }
 
 void Chip8::Tick() {
-    uint16_t in = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
+    size_i in = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
     cpu.pc += 2;
 
     switch (in >> 12) {
         case 0x0000:
             switch(in & 0x00FF) {
                 case 0xE0: // 00E0
-                    instruction::OP_CLS(&display);
+                    instruction::CLS(&display);
                     break;
                 case 0xEE: // 00EE
-                    instruction::OP_RET(&cpu);
+                    instruction::RET(&cpu);
                     break;
             }
             break;
         case 0x1000:
-            instruction::OP_JP(in, &cpu);
+            instruction::JMP(in, &cpu);
             break;
         case 0x2000:
-            instruction::OP_CALL(in, &cpu);
+            instruction::CALL(in, &cpu);
             break;
         case 0x3000:
-            instruction::OP_SE_BYTE(in, &cpu);
+            instruction::SE_VX_KK(in, &cpu);
             break;
         case 0x4000:
-            instruction::OP_SNE_BYTE(in, &cpu);
+            instruction::SNE_VX_KK(in, &cpu);
             break;
         case 0x5000:
-            instruction::OP_SN_XY(in, &cpu);
+            instruction::SE_VX_VY(in, &cpu);
             break;
         case 0x6000:
-            instruction::LD_VX_BYTE(in, &cpu);
+            instruction::LD_VX_KK(in, &cpu);
             break;
         case 0x7000:
-            instruction::ADD_VX_BYTE(in, &cpu);
+            instruction::ADD_VX_KK(in, &cpu);
+            break;
+        case 0x8000:
+            switch(in & 0x000F) {
+                case 0x00:
+                    instruction::LD_VX_VY(in, &cpu);
+                    break;
+                case 0x01:
+                    instruction::OR_VX_VY(in, &cpu);
+                    break;
+                case 0x02:
+                    instruction::AND_VX_VY(in, &cpu);
+                    break;
+                case 0x03:
+                    instruction::XOR_VX_VY(in, &cpu);
+                    break;
+                case 0x04:
+                    // TODO: impl.
+                    break;
+                case 0x05:
+                    // TODO: impl.
+                    break;
+                case 0x06:
+                    // TODO: impl.
+                    break;
+                case 0x07:
+                    // TODO: impl.
+                    break;
+                case 0x0E:
+                    // TODO: impl.
+                    break;
+            }
             break;
     }
 }

@@ -7,66 +7,88 @@
 #include "cpu.h"
 #include "display.h"
 
+using size_i = uint16_t; // size of instruction
+
 namespace c8::instruction {
 
-uint16_t GetAddress(int in) { return in & 0x0FFF; }
+size_i GetAddress(int in) { return in & 0x0FFF; }
 
-uint16_t GetByte(int in) { return (in & 0x00FF); }
+size_i GetByte(int in) { return (in & 0x00FF); }
 
-uint16_t GetX(int in) { return (in & 0x0F00) >> 8; }
+size_i GetX(int in) { return (in & 0x0F00) >> 8; }
 
-uint16_t GetY(int in) { return (in & 0x00F0) >> 4; }
+size_i GetY(int in) { return (in & 0x00F0) >> 4; }
 
 // 00E0 - Clear screen
-void OP_CLS(Display *display) {
+void CLS(Display *display) {
     display->ClearScreen();
 }
 
 // 00EE - Return from a subroutine
-void OP_RET(Cpu *cpu) {
+void RET(Cpu *cpu) {
     cpu->pc = cpu->stack[--cpu->sp];
 }
 
 // 1nnn - Jump to address nnn
-void OP_JP(uint16_t in, Cpu *cpu) {
+void JMP(size_i in, Cpu *cpu) {
     cpu->pc = GetAddress(in);
 }
 
 // 2nnn - Call subroutine at address nnn
-void OP_CALL(uint16_t in, Cpu *cpu) {
+void CALL(size_i in, Cpu *cpu) {
     cpu->stack[cpu->sp++] = cpu->pc;
     cpu->pc = GetAddress(in);
 }
 
 // 3xkk - Skip next instruction if V[x] == kk
-void OP_SE_BYTE(uint16_t in, Cpu *cpu) {
+void SE_VX_KK(size_i in, Cpu *cpu) {
     if (cpu->registers[GetX(in)] == GetByte(in)) {
         cpu->pc += 2;
     }
 }
 
 // 4xkk - Skip next instruction if V[x] != kk
-void OP_SNE_BYTE(uint16_t in, Cpu *cpu) {
+void SNE_VX_KK(size_i in, Cpu *cpu) {
     if (cpu->registers[GetX(in)] != GetByte(in)) {
         cpu->pc += 2;
     }
 }
 
 // 5xy0 - Skip next instruction if Vx = Vy
-void OP_SN_XY(uint16_t in, Cpu *cpu) {
+void SE_VX_VY(size_i in, Cpu *cpu) {
     if (cpu->registers[GetX(in)] == cpu->registers[GetY(in)]) {
         cpu->pc += 2;
     }
 }
 
 // 6xkk - Puts the value kk into register Vx.
-void LD_VX_BYTE(uint16_t in, Cpu *cpu) {
+void LD_VX_KK(size_i in, Cpu *cpu) {
     cpu->registers[GetX(in)] = GetByte(in);
 }
 
 // 7xkk - Adds the value kk to the value of register Vx
-void ADD_VX_BYTE(uint16_t in, Cpu *cpu) {
+void ADD_VX_KK(size_i in, Cpu *cpu) {
     cpu->registers[GetX(in)] += GetByte(in);
+}
+
+// 8xy0 - Puts the value of register Vy in register Vx.
+void LD_VX_VY(size_i in, Cpu *cpu) {
+    cpu->registers[GetX(in)] = cpu->registers[GetY(in)];
+}
+
+// 8xy1 - Set Vx = Vx OR Vy
+void OR_VX_VY(size_i in, Cpu *cpu) {
+    cpu->registers[GetX(in)] |= cpu->registers[GetY(in)];
+}
+
+// 8xy2 - Set Vx = Vx AND Vy
+void AND_VX_VY(size_i in, Cpu *cpu) {
+    cpu->registers[GetX(in)] &= cpu->registers[GetY(in)];
+}
+
+// 8xy3 - Set Vx = Vx XOR Vy
+void XOR_VX_VY(size_i in, Cpu *cpu) {
+    cpu->registers[GetX(in)] ^= cpu->registers[GetY(in)];
 }
 
 }
