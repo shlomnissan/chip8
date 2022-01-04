@@ -1,8 +1,6 @@
 // Copyright 2021 Betamark Pty Ltd. All rights reserved.
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
-#include <sstream>
-
 #include "chip8.h"
 #include "parser.h"
 #include "types.h"
@@ -53,8 +51,6 @@ void Chip8::Tick() {
         case Instruction::AND_VX_VY: return AND_VX_VY(opcode, &cpu);
         case Instruction::XOR_VX_VY: return XOR_VX_VY(opcode, &cpu);
         default:
-            std::stringstream message;
-            message << "Unknown opcode 0x" << std::hex << opcode;
-            throw std::runtime_error(message.str());
+            throw bad_opcode(opcode);
     }
 }
