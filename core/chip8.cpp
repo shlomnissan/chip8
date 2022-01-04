@@ -1,7 +1,11 @@
 // Copyright 2021 Betamark Pty Ltd. All rights reserved.
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
+#include <sstream>
+
 #include "chip8.h"
+#include "parser.h"
+#include "types.h"
 #include "instructions.h"
 
 using namespace c8;
@@ -9,7 +13,6 @@ using namespace c8;
 void Chip8::Reset() {
     ram.Reset();
     program_loaded = false;
-
     cpu.registers = {0};
     cpu.stack = {0};
     cpu.I = 0;
@@ -29,71 +32,29 @@ bool Chip8::ProgramLoaded() const {
 }
 
 void Chip8::Tick() {
-    size_i in = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
-    cpu.pc += 2;
+    size_op opcode = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
+    auto instruction = parse(opcode);
 
-    switch (in >> 12) {
-        case 0x0000:
-            switch(in & 0x00FF) {
-                case 0xE0: // 00E0
-                    instruction::CLS(&display);
-                    break;
-                case 0xEE: // 00EE
-                    instruction::RET(&cpu);
-                    break;
-            }
-            break;
-        case 0x1000:
-            instruction::JMP(in, &cpu);
-            break;
-        case 0x2000:
-            instruction::CALL(in, &cpu);
-            break;
-        case 0x3000:
-            instruction::SE_VX_KK(in, &cpu);
-            break;
-        case 0x4000:
-            instruction::SNE_VX_KK(in, &cpu);
-            break;
-        case 0x5000:
-            instruction::SE_VX_VY(in, &cpu);
-            break;
-        case 0x6000:
-            instruction::LD_VX_KK(in, &cpu);
-            break;
-        case 0x7000:
-            instruction::ADD_VX_KK(in, &cpu);
-            break;
-        case 0x8000:
-            switch(in & 0x000F) {
-                case 0x00:
-                    instruction::LD_VX_VY(in, &cpu);
-                    break;
-                case 0x01:
-                    instruction::OR_VX_VY(in, &cpu);
-                    break;
-                case 0x02:
-                    instruction::AND_VX_VY(in, &cpu);
-                    break;
-                case 0x03:
-                    instruction::XOR_VX_VY(in, &cpu);
-                    break;
-                case 0x04:
-                    // TODO: impl.
-                    break;
-                case 0x05:
-                    // TODO: impl.
-                    break;
-                case 0x06:
-                    // TODO: impl.
-                    break;
-                case 0x07:
-                    // TODO: impl.
-                    break;
-                case 0x0E:
-                    // TODO: impl.
-                    break;
-            }
-            break;
+    cpu.pc += 2; // increment program counter
+
+    using namespace instruction;
+    switch (instruction) {
+        case Instruction::CLS: return CLS(&display);
+        case Instruction::RET: return RET(&cpu);
+        case Instruction::JMP: return JMP(opcode, &cpu);
+        case Instruction::CALL: return CALL(opcode, &cpu);
+        case Instruction::SE_VX_KK: return SE_VX_KK(opcode, &cpu);
+        case Instruction::SNE_VX_KK: return SNE_VX_KK(opcode, &cpu);
+        case Instruction::SE_VX_VY: return SE_VX_VY(opcode, &cpu);
+        case Instruction::LD_VX_KK: return LD_VX_KK(opcode, &cpu);
+        case Instruction::ADD_VX_KK: return ADD_VX_KK(opcode, &cpu);
+        case Instruction::LD_VX_VY: return LD_VX_VY(opcode, &cpu);
+        case Instruction::OR_VX_VY: return OR_VX_VY(opcode, &cpu);
+        case Instruction::AND_VX_VY: return AND_VX_VY(opcode, &cpu);
+        case Instruction::XOR_VX_VY: return XOR_VX_VY(opcode, &cpu);
+        default:
+            std::stringstream message;
+            message << "Unknown opcode 0x" << std::hex << opcode;
+            throw std::runtime_error(message.str());
     }
 }

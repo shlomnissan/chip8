@@ -9,10 +9,9 @@
 #include "core/display.h"
 
 using namespace c8;
-
 // 00E0 - CLS
 // Clear the display.
-TEST(Instructions, CLS) {
+TEST(Instruction, CLS) {
     Display display;
 
     // turn pixels on
@@ -21,7 +20,7 @@ TEST(Instructions, CLS) {
 
     instruction::CLS(&display);
 
-    // make sure all pixels are turned off
+    // make sure all pixels are off
     for (auto i = 0; i < Display::kWidth * Display::kHeight; ++i) {
         EXPECT_EQ(display[i], 0);
     }
@@ -29,7 +28,7 @@ TEST(Instructions, CLS) {
 
 // 00EE - RET
 // Return from a subroutine.
-TEST(Instructions, RET) {
+TEST(Instruction, RET) {
     Cpu cpu;
 
     // call subroutine 0x001
@@ -43,7 +42,7 @@ TEST(Instructions, RET) {
 
 // 1nnn - JP addr
 // Jump to location nnn.
-TEST(Instructions, JMP) {
+TEST(Instruction, JMP) {
     Cpu cpu;
 
     // jump to address 0x011A
@@ -53,7 +52,7 @@ TEST(Instructions, JMP) {
 
 // 2nnn - CALL addr
 // Call subroutine at nnn.
-TEST(Instructions, CALL) {
+TEST(Instruction, CALL) {
     Cpu cpu;
 
     instruction::CALL(0x2001, &cpu);
@@ -63,7 +62,7 @@ TEST(Instructions, CALL) {
 
 // 3xkk - SE Vx, byte
 // Skip next instruction if Vx = kk.
-TEST(Instructions, SE_VX_KK) {
+TEST(Instruction, SE_VX_KK) {
     Cpu cpu;
 
     // set registers
@@ -80,7 +79,7 @@ TEST(Instructions, SE_VX_KK) {
 
 // 4xkk - SNE Vx, byte
 // Skip next instruction if Vx != kk.
-TEST(Instructions, SNE_VX_KK) {
+TEST(Instruction, SNE_VX_KK) {
     Cpu cpu;
 
     // set registers
