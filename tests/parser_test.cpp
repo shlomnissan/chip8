@@ -22,4 +22,25 @@ TEST(Parser, Opcodes) {
     EXPECT_EQ(parse(0x8011), OR_VX_VY);
     EXPECT_EQ(parse(0x8012), AND_VX_VY);
     EXPECT_EQ(parse(0x8013), XOR_VX_VY);
+    EXPECT_EQ(parse(0x8014), ADD_VX_VY);
+    EXPECT_EQ(parse(0x8015), SUB_VX_VY);
+    EXPECT_EQ(parse(0x8016), SHR_VX_VY);
+    EXPECT_EQ(parse(0x8017), SUBN_VX_VY);
+    EXPECT_EQ(parse(0x801E), SHL_VX_VY);
+    EXPECT_EQ(parse(0x9010), SNE_VX_VY);
+    EXPECT_EQ(parse(0xA111), LD_I);
+    EXPECT_EQ(parse(0xB111), JMP_V0);
+    EXPECT_EQ(parse(0xC100), RND);
+    EXPECT_EQ(parse(0xD321), DRW);
+    EXPECT_EQ(parse(0xE09E), SKP);
+    EXPECT_EQ(parse(0xE0A1), SKNP);
+    EXPECT_EQ(parse(0xF107), LD_VX_DT);
+    EXPECT_EQ(parse(0xF10A), LD_VX_K);
+    EXPECT_EQ(parse(0xF115), LD_DT);
+    EXPECT_EQ(parse(0xF118), LD_ST);
+    EXPECT_EQ(parse(0xF11E), ADD_I_VX);
+    EXPECT_EQ(parse(0xF129), LD_F_VX);
+    EXPECT_EQ(parse(0xF133), LD_B_VX);
+    EXPECT_EQ(parse(0xF155), LD_I_VX);
+    EXPECT_EQ(parse(0xF165), LD_VX_I);
 }

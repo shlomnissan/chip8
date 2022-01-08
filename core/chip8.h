@@ -6,7 +6,6 @@
 
 #include <vector>
 #include <string_view>
-#include <sstream>
 
 #include "cpu.h"
 #include "memory.h"
@@ -29,20 +28,6 @@ private:
     Display display;
 
     bool program_loaded = false;
-};
-
-struct bad_opcode : public std::exception {
-    std::string message;
-
-    explicit bad_opcode(size_op c) {
-        std::stringstream stream;
-        stream << "Unknown opcode 0x" << std::hex << c;
-        message = stream.str();
-    }
-
-    [[nodiscard]] const char* what() const noexcept override {
-        return message.c_str();
-    }
 };
 
 }

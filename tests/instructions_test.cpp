@@ -9,8 +9,7 @@
 #include "core/display.h"
 
 using namespace c8;
-// 00E0 - CLS
-// Clear the display.
+
 TEST(Instruction, CLS) {
     Display display;
 
@@ -26,8 +25,6 @@ TEST(Instruction, CLS) {
     }
 }
 
-// 00EE - RET
-// Return from a subroutine.
 TEST(Instruction, RET) {
     Cpu cpu;
 
@@ -40,8 +37,6 @@ TEST(Instruction, RET) {
     EXPECT_EQ(cpu.stack[cpu.sp], 0x00);
 }
 
-// 1nnn - JP addr
-// Jump to location nnn.
 TEST(Instruction, JMP) {
     Cpu cpu;
 
@@ -50,8 +45,6 @@ TEST(Instruction, JMP) {
     EXPECT_EQ(cpu.pc, 0x011A);
 }
 
-// 2nnn - CALL addr
-// Call subroutine at nnn.
 TEST(Instruction, CALL) {
     Cpu cpu;
 
@@ -60,8 +53,6 @@ TEST(Instruction, CALL) {
     EXPECT_EQ(cpu.pc, 0x01);
 }
 
-// 3xkk - SE Vx, byte
-// Skip next instruction if Vx = kk.
 TEST(Instruction, SE_VX_KK) {
     Cpu cpu;
 
@@ -77,8 +68,6 @@ TEST(Instruction, SE_VX_KK) {
     EXPECT_EQ(cpu.pc, 0x02);
 }
 
-// 4xkk - SNE Vx, byte
-// Skip next instruction if Vx != kk.
 TEST(Instruction, SNE_VX_KK) {
     Cpu cpu;
 
@@ -94,8 +83,6 @@ TEST(Instruction, SNE_VX_KK) {
     EXPECT_EQ(cpu.pc, 0x02);
 }
 
-// 5xy0 - SE Vx, Vy
-// Skip next instruction if Vx = Vy.
 TEST(Instruction, SE_VX_VY) {
     Cpu cpu;
 
@@ -113,8 +100,6 @@ TEST(Instruction, SE_VX_VY) {
     EXPECT_EQ(cpu.pc, 0x02);
 }
 
-// 6xkk - LD Vx, byte
-// Set Vx = kk.
 TEST(Instruction, LD_VX_KK) {
     Cpu cpu;
 
@@ -122,8 +107,6 @@ TEST(Instruction, LD_VX_KK) {
     EXPECT_EQ(cpu.registers[0x00], 0xAA);
 }
 
-// 7xkk - ADD Vx, byte
-// Set Vx = Vx + kk.
 TEST(Instruction, ADD_VX_KK) {
     Cpu cpu;
 
@@ -134,8 +117,6 @@ TEST(Instruction, ADD_VX_KK) {
     EXPECT_EQ(cpu.registers[0x00], 0x03);
 }
 
-// 8xy0 - LD Vx, Vy
-// Set Vx = Vy.
 TEST(Instruction, LD_VX_VY) {
     Cpu cpu;
 
@@ -146,8 +127,6 @@ TEST(Instruction, LD_VX_VY) {
     EXPECT_EQ(cpu.registers[0x00], 0x02);
 }
 
-// 8xy1 - OR Vx, Vy
-// Set Vx = Vx OR Vy.
 TEST(Instruction, OR_VX_VY) {
     Cpu cpu;
 
@@ -159,8 +138,6 @@ TEST(Instruction, OR_VX_VY) {
     EXPECT_EQ(cpu.registers[0x00], 0x03);
 }
 
-// 8xy2 - AND Vx, Vy
-// Set Vx = Vx AND Vy.
 TEST(Instruction, AND_VX_VY) {
     Cpu cpu;
 
@@ -172,8 +149,6 @@ TEST(Instruction, AND_VX_VY) {
     EXPECT_EQ(cpu.registers[0x00], 0x00);
 }
 
-// 8xy3 - XOR Vx, Vy
-// Set Vx = Vx XOR Vy.
 TEST(Instruction, XOR_VX_VY) {
     Cpu cpu;
 
@@ -183,4 +158,88 @@ TEST(Instruction, XOR_VX_VY) {
 
     instruction::XOR_VX_VY(0x8013, &cpu);
     EXPECT_EQ(cpu.registers[0x00], 0x13);
+}
+
+TEST(Instruction, ADD_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SUB_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SHR_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SUBN_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SHL_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SNE_VX_VY) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_I) {
+    // TODO: impl.
+}
+
+TEST(Instruction, JP_V0) {
+    // TODO: impl.
+}
+
+TEST(Instruction, RND) {
+    // TODO: impl.
+}
+
+TEST(Instruction, DRW) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SKP) {
+    // TODO: impl.
+}
+
+TEST(Instruction, SKNP) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_VX_DT) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_VX_K) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_DT) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_ST) {
+    // TODO: impl.
+}
+
+TEST(Instruction, ADD_I_VX) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_F_VX) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_B_VX) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_I_VX) {
+    // TODO: impl.
+}
+
+TEST(Instruction, LD_VX_I) {
+    // TODO: impl.
 }
