@@ -4,7 +4,6 @@
 #ifndef CHIP8_INSTRUCTIONS_H
 #define CHIP8_INSTRUCTIONS_H
 
-#include "cpu.h"
 #include "display.h"
 #include "types.h"
 

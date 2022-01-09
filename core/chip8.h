@@ -7,7 +7,6 @@
 #include <vector>
 #include <string_view>
 
-#include "cpu.h"
 #include "memory.h"
 #include "display.h"
 #include "types.h"

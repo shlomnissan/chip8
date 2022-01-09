@@ -5,8 +5,8 @@
 #include <algorithm>
 
 #include "core/instructions.h"
-#include "core/cpu.h"
 #include "core/display.h"
+#include "core/types.h"
 
 using namespace c8;
 

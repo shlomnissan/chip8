@@ -15,7 +15,6 @@ set(HEADERS
     emulator.h
     messages.h
     core/parser.h
-    core/cpu.h
     core/chip8.h
     core/rom.h
     core/display.h
