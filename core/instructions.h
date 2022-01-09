@@ -10,13 +10,10 @@
 
 namespace c8::instruction {
 
-size_op GetAddress(int in) { return in & 0x0FFF; }
-
-size_op GetByte(int in) { return (in & 0x00FF); }
-
-size_op GetX(int in) { return (in & 0x0F00) >> 8; }
-
-size_op GetY(int in) { return (in & 0x00F0) >> 4; }
+inline size_op GetAddress(int in) { return in & 0x0FFF; }
+inline size_op GetByte(int in) { return (in & 0x00FF); }
+inline size_op GetX(int in) { return (in & 0x0F00) >> 8; }
+inline size_op GetY(int in) { return (in & 0x00F0) >> 4; }
 
 // 00E0 - Clear the display.
 void CLS(Display *display) {
@@ -92,27 +89,33 @@ void XOR_VX_VY(size_op in, Cpu *cpu) {
 
 // 8xy4 - Set Vx = Vx + Vy, set VF = carry.
 void ADD_VX_VY(size_op in, Cpu *cpu) {
-    // TODO: impl.
+    uint16_t sum = cpu->registers[GetX(in)] + cpu->registers[GetY(in)];
+    cpu->registers[0x0F] = sum > 0xFF ? 1 : 0;
+    cpu->registers[GetX(in)] = sum & 0xFF;
 }
 
 // 8xy5 - Set Vx = Vx - Vy, set VF = NOT borrow.
 void SUB_VX_VY(size_op in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->registers[0x0F] = cpu->registers[GetX(in)] > cpu->registers[GetY(in)] ? 1 : 0;
+    cpu->registers[GetX(in)] -= cpu->registers[GetY(in)];
 }
 
 // 8xy6 - Set Vx = Vx SHR 1.
-void SHR_VX_VY(size_op in, Cpu *cpu) {
-    // TODO: impl.
+void SHR_VX(size_op in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[GetX(in)] & 0x01;
+    cpu->registers[GetX(in)] >>= 1;
 }
 
 // 8xy7 - Set Vx = Vy - Vx, set VF = NOT borrow.
 void SUBN_VX_VY(size_op in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->registers[0x0F] = cpu->registers[GetY(in)] > cpu->registers[GetX(in)] ? 1 : 0;
+    cpu->registers[GetX(in)] = cpu->registers[GetY(in)] - cpu->registers[GetX(in)];
 }
 
-// 8xyE - SHL Vx {, Vy}.
-void SHL_VX_VY(size_op in, Cpu *cpu) {
-    // TODO: impl.
+// 8xyE - Set Vx = Vx SHL 1.
+void SHL_VX(size_op in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[GetX(in)] >> 7;
+    cpu->registers[GetX(in)] <<= 1;
 }
 
 // 9xy0 - Skip next instruction if Vx != Vy.

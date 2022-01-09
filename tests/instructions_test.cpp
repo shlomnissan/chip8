@@ -55,8 +55,6 @@ TEST(Instruction, CALL) {
 
 TEST(Instruction, SE_VX_KK) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
 
     // kk is 1, should skip instruction
@@ -70,8 +68,6 @@ TEST(Instruction, SE_VX_KK) {
 
 TEST(Instruction, SNE_VX_KK) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
 
     // kk is 1, should NOT skip instruction
@@ -85,8 +81,6 @@ TEST(Instruction, SNE_VX_KK) {
 
 TEST(Instruction, SE_VX_VY) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
     cpu.registers[0x01] = 0x01;
     cpu.registers[0x02] = 0x02;
@@ -109,8 +103,6 @@ TEST(Instruction, LD_VX_KK) {
 
 TEST(Instruction, ADD_VX_KK) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
 
     instruction::ADD_VX_KK(0x7002, &cpu);
@@ -119,8 +111,6 @@ TEST(Instruction, ADD_VX_KK) {
 
 TEST(Instruction, LD_VX_VY) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x01] = 0x02;
 
     instruction::LD_VX_VY(0x8010, &cpu);
@@ -129,8 +119,6 @@ TEST(Instruction, LD_VX_VY) {
 
 TEST(Instruction, OR_VX_VY) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
     cpu.registers[0x01] = 0x02;
 
@@ -140,8 +128,6 @@ TEST(Instruction, OR_VX_VY) {
 
 TEST(Instruction, AND_VX_VY) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x01;
     cpu.registers[0x01] = 0x02;
 
@@ -151,8 +137,6 @@ TEST(Instruction, AND_VX_VY) {
 
 TEST(Instruction, XOR_VX_VY) {
     Cpu cpu;
-
-    // set registers
     cpu.registers[0x00] = 0x11;
     cpu.registers[0x01] = 0x02;
 
@@ -161,23 +145,83 @@ TEST(Instruction, XOR_VX_VY) {
 }
 
 TEST(Instruction, ADD_VX_VY) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.registers[0x00] = 0x01;
+    cpu.registers[0x01] = 0x02;
+
+    // add without overflow
+    instruction::ADD_VX_VY(0x8014, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x03);
+    EXPECT_EQ(cpu.registers[0x0F], 0x00);
+
+    // add with overflow - test the carry (0x0F)
+    cpu.registers[0x00] = 0xFF;
+    instruction::ADD_VX_VY(0x8014, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x01);
+    EXPECT_EQ(cpu.registers[0x0F], 0x01);
 }
 
 TEST(Instruction, SUB_VX_VY) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.registers[0x00] = 0x01;
+    cpu.registers[0x01] = 0x02;
+
+    // subtract with negative result
+    instruction::SUB_VX_VY(0x8015, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0xFF);
+    EXPECT_EQ(cpu.registers[0x0F], 0x00);
+
+    // subtract with positive result
+    cpu.registers[0x00] = 0x04;
+    instruction::SUB_VX_VY(0x8015, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x02);
+    EXPECT_EQ(cpu.registers[0x0F], 0x01);
 }
 
-TEST(Instruction, SHR_VX_VY) {
-    // TODO: impl.
+TEST(Instruction, SHR_VX) {
+    Cpu cpu;
+    cpu.registers[0x00] = 0x06;
+
+    instruction::SHR_VX(0x8006, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x03);
+    EXPECT_EQ(cpu.registers[0x0F], 0x00);
+
+    instruction::SHR_VX(0x8006, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x01);
+    EXPECT_EQ(cpu.registers[0x0F], 0x01);
 }
 
 TEST(Instruction, SUBN_VX_VY) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.registers[0x00] = 0x02;
+    cpu.registers[0x01] = 0x03;
+
+    // subtract with a positive result
+    instruction::SUBN_VX_VY(0x8017, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x01);
+    EXPECT_EQ(cpu.registers[0x0F], 0x01);
+
+    cpu.registers[0x00] = 0x03;
+    cpu.registers[0x01] = 0x02;
+
+    // subtract with a negative result
+    instruction::SUBN_VX_VY(0x8017, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0xFF);
+    EXPECT_EQ(cpu.registers[0x0F], 0x00);
 }
 
-TEST(Instruction, SHL_VX_VY) {
-    // TODO: impl.
+TEST(Instruction, SHL_VX) {
+    Cpu cpu;
+    cpu.registers[0x00] = 0x80;
+
+    instruction::SHL_VX(0x800E, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x00);
+    EXPECT_EQ(cpu.registers[0x0F], 0x01);
+
+    cpu.registers[0x00] = 0x40;
+    instruction::SHL_VX(0x800E, &cpu);
+    EXPECT_EQ(cpu.registers[0x00], 0x80);
+    EXPECT_EQ(cpu.registers[0x0F], 0x00);
 }
 
 TEST(Instruction, SNE_VX_VY) {

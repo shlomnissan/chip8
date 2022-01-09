@@ -52,9 +52,9 @@ void Chip8::Tick() {
         case Instruction::XOR_VX_VY: return XOR_VX_VY(opcode, &cpu);
         case Instruction::ADD_VX_VY: return ADD_VX_VY(opcode, &cpu);
         case Instruction::SUB_VX_VY: return SUB_VX_VY(opcode, &cpu);
-        case Instruction::SHR_VX_VY: return SHR_VX_VY(opcode, &cpu);
+        case Instruction::SHR_VX: return SHR_VX(opcode, &cpu);
         case Instruction::SUBN_VX_VY: return SUBN_VX_VY(opcode, &cpu);
-        case Instruction::SHL_VX_VY: return SHL_VX_VY(opcode, &cpu);
+        case Instruction::SHL_VX: return SHL_VX(opcode, &cpu);
         case Instruction::SNE_VX_VY: return SNE_VX_VY(opcode, &cpu);
         case Instruction::LD_I: return LD_I(opcode, &cpu);
         case Instruction::JMP_V0: return JP_V0(opcode, &cpu);

@@ -34,8 +34,8 @@ enum class Instruction {
     RND,
     SE_VX_KK,
     SE_VX_VY,
-    SHL_VX_VY,
-    SHR_VX_VY,
+    SHL_VX,
+    SHR_VX,
     SKNP,
     SKP,
     SNE_VX_KK,
@@ -88,11 +88,11 @@ Instruction parse(size_op opcode) {
                 // 8xy5 - Set Vx = Vx - Vy, set VF = NOT borrow.
                 case 0x05: return Instruction::SUB_VX_VY;
                 // 8xy6 - Set Vx = Vx SHR 1.
-                case 0x06: return Instruction::SHR_VX_VY;
+                case 0x06: return Instruction::SHR_VX;
                 // 8xy7 - Set Vx = Vy - Vx, set VF = NOT borrow.
                 case 0x07: return Instruction::SUBN_VX_VY;
-                // 8xyE - SHL Vx {, Vy}.
-                case 0x0E: return Instruction::SHL_VX_VY;
+                // 8xyE - Set Vx = Vx SHL 1.
+                case 0x0E: return Instruction::SHL_VX;
                 // UNKNOWN
                 default: return Instruction::UNKNOWN;
             }
