@@ -9,11 +9,6 @@
 
 namespace c8::instruction {
 
-inline size_op GetAddress(int in) { return in & 0x0FFF; }
-inline size_op GetByte(int in) { return (in & 0x00FF); }
-inline size_op GetX(int in) { return (in & 0x0F00) >> 8; }
-inline size_op GetY(int in) { return (in & 0x00F0) >> 4; }
-
 // 00E0 - Clear the display.
 void CLS(Display *display) {
     display->ClearScreen();
@@ -25,175 +20,175 @@ void RET(Cpu *cpu) {
 }
 
 // 1nnn - Jump to location nnn.
-void JMP(size_op in, Cpu *cpu) {
-    cpu->pc = GetAddress(in);
+void JMP(Opcode in, Cpu *cpu) {
+    cpu->pc = in.address();
 }
 
 // 2nnn - Call subroutine at nnn.
-void CALL(size_op in, Cpu *cpu) {
+void CALL(Opcode in, Cpu *cpu) {
     cpu->stack[cpu->sp++] = cpu->pc;
-    cpu->pc = GetAddress(in);
+    cpu->pc = in.address();
 }
 
 // 3xkk - Skip next instruction if Vx = kk.
-void SE_VX_KK(size_op in, Cpu *cpu) {
-    if (cpu->registers[GetX(in)] == GetByte(in)) {
+void SE_VX_KK(Opcode in, Cpu *cpu) {
+    if (cpu->registers[in.x()] == in.byte()) {
         cpu->pc += 2;
     }
 }
 
     // 4xkk - Skip next instruction if Vx != kk.
-void SNE_VX_KK(size_op in, Cpu *cpu) {
-    if (cpu->registers[GetX(in)] != GetByte(in)) {
+void SNE_VX_KK(Opcode in, Cpu *cpu) {
+    if (cpu->registers[in.x()] != in.byte()) {
         cpu->pc += 2;
     }
 }
 
 // 5xy0 - Skip next instruction if Vx = Vy.
-void SE_VX_VY(size_op in, Cpu *cpu) {
-    if (cpu->registers[GetX(in)] == cpu->registers[GetY(in)]) {
+void SE_VX_VY(Opcode in, Cpu *cpu) {
+    if (cpu->registers[in.x()] == cpu->registers[in.y()]) {
         cpu->pc += 2;
     }
 }
 
 // 6xkk - The interpreter puts the value kk into register Vx.
-void LD_VX_KK(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] = GetByte(in);
+void LD_VX_KK(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] = in.byte();
 }
 
 // 7xkk - Adds the value kk to the value of register Vx.
-void ADD_VX_KK(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] += GetByte(in);
+void ADD_VX_KK(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] += in.byte();
 }
 
 // 8xy0 - Stores the value of register Vy in register Vx.
-void LD_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] = cpu->registers[GetY(in)];
+void LD_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] = cpu->registers[in.y()];
 }
 
 // 8xy1 - Performs a bitwise OR on the values of Vx and Vy.
-void OR_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] |= cpu->registers[GetY(in)];
+void OR_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] |= cpu->registers[in.y()];
 }
 
 // 8xy2 - Performs a bitwise AND on the values of Vx and Vy.
-void AND_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] &= cpu->registers[GetY(in)];
+void AND_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] &= cpu->registers[in.y()];
 }
 
 // 8xy3 - Performs a bitwise exclusive OR on the values of Vx and Vy.
-void XOR_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[GetX(in)] ^= cpu->registers[GetY(in)];
+void XOR_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[in.x()] ^= cpu->registers[in.y()];
 }
 
 // 8xy4 - Set Vx = Vx + Vy, set VF = carry.
-void ADD_VX_VY(size_op in, Cpu *cpu) {
-    uint16_t sum = cpu->registers[GetX(in)] + cpu->registers[GetY(in)];
+void ADD_VX_VY(Opcode in, Cpu *cpu) {
+    uint16_t sum = cpu->registers[in.x()] + cpu->registers[in.y()];
     cpu->registers[0x0F] = sum > 0xFF ? 1 : 0;
-    cpu->registers[GetX(in)] = sum & 0xFF;
+    cpu->registers[in.x()] = sum & 0xFF;
 }
 
 // 8xy5 - Set Vx = Vx - Vy, set VF = NOT borrow.
-void SUB_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[GetX(in)] > cpu->registers[GetY(in)] ? 1 : 0;
-    cpu->registers[GetX(in)] -= cpu->registers[GetY(in)];
+void SUB_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[in.x()] > cpu->registers[in.y()] ? 1 : 0;
+    cpu->registers[in.x()] -= cpu->registers[in.y()];
 }
 
 // 8xy6 - Set Vx = Vx SHR 1.
-void SHR_VX(size_op in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[GetX(in)] & 0x01;
-    cpu->registers[GetX(in)] >>= 1;
+void SHR_VX(Opcode in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[in.x()] & 0x01;
+    cpu->registers[in.x()] >>= 1;
 }
 
 // 8xy7 - Set Vx = Vy - Vx, set VF = NOT borrow.
-void SUBN_VX_VY(size_op in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[GetY(in)] > cpu->registers[GetX(in)] ? 1 : 0;
-    cpu->registers[GetX(in)] = cpu->registers[GetY(in)] - cpu->registers[GetX(in)];
+void SUBN_VX_VY(Opcode in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[in.y()] > cpu->registers[in.x()] ? 1 : 0;
+    cpu->registers[in.x()] = cpu->registers[in.y()] - cpu->registers[in.x()];
 }
 
 // 8xyE - Set Vx = Vx SHL 1.
-void SHL_VX(size_op in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[GetX(in)] >> 7;
-    cpu->registers[GetX(in)] <<= 1;
+void SHL_VX(Opcode in, Cpu *cpu) {
+    cpu->registers[0x0F] = cpu->registers[in.x()] >> 7;
+    cpu->registers[in.x()] <<= 1;
 }
 
 // 9xy0 - Skip next instruction if Vx != Vy.
-void SNE_VX_VY(size_op in, Cpu *cpu) {
+void SNE_VX_VY(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Annn - Register I is set to nnn.
-void LD_I(size_op in, Cpu *cpu) {
+void LD_I(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Bnnn - Program counter is set to nnn plus the value of V0.
-void JP_V0(size_op in, Cpu *cpu) {
+void JP_V0(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Cxkk - Set Vx = random byte AND kk.
-void RND(size_op in, Cpu *cpu) {
+void RND(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Dxyn - Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
-void DRW(size_op in, Cpu *cpu, Display *display) {
+void DRW(Opcode in, Cpu *cpu, Display *display) {
     // TODO: impl.
 }
 
 // Ex9E - Skip instruction if key with the value of Vx is pressed.
-void SKP(size_op in, Cpu *cpu) {
+void SKP(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // ExA1 - Skip instruction if key with the value of Vx is not pressed.
-void SKNP(size_op in, Cpu *cpu) {
+void SKNP(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx07 - Set Vx = delay timer value.
-void LD_VX_DT(size_op in, Cpu *cpu) {
+void LD_VX_DT(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx0A - Wait for a key press, store the value of the key in Vx.
-void LD_VX_K(size_op in, Cpu *cpu) {
+void LD_VX_K(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx15 - Set delay timer = Vx.
-void LD_DT(size_op in, Cpu *cpu) {
+void LD_DT(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx18 - Set sound timer = Vx.
-void LD_ST(size_op in, Cpu *cpu) {
+void LD_ST(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx1E - Set I = I + Vx.
-void ADD_I_VX(size_op in, Cpu *cpu) {
+void ADD_I_VX(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx29 - Set I = location of sprite for digit Vx.
-void LD_F_VX(size_op in, Cpu *cpu) {
+void LD_F_VX(Opcode in, Cpu *cpu) {
    // TODO: impl.
 }
 
 // Fx33 - Store BCD representation of Vx in memory locations I, I+1, and I+2.
-void LD_B_VX(size_op in, Cpu *cpu) {
+void LD_B_VX(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx55 - Store registers V0 through Vx in memory starting at location I.
-void LD_I_VX(size_op in, Cpu *cpu) {
+void LD_I_VX(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
 // Fx65 - Read registers V0 through Vx from memory starting at location I.
-void LD_VX_I(size_op in, Cpu *cpu) {
+void LD_VX_I(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 

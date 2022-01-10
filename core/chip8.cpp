@@ -30,7 +30,7 @@ bool Chip8::ProgramLoaded() const {
 }
 
 void Chip8::Tick() {
-    size_op opcode = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
+    Opcode opcode = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
     auto instruction = parse(opcode);
 
     cpu.pc += 2; // increment program counter

@@ -48,10 +48,10 @@ enum class Instruction {
 
 // Standard Chip-8 instructions reference:
 // http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
-Instruction parse(size_op opcode) {
-    switch (opcode >> 12) {
+Instruction parse(Opcode opcode) {
+    switch (opcode.high()) {
         case 0x00:
-            switch (opcode & 0x00FF) {
+            switch (opcode.byte()) {
                 // 00E0 - Clear the display.
                 case 0xE0: return Instruction::CLS;
                 // 00EE - Return from a subroutine.
@@ -74,7 +74,7 @@ Instruction parse(size_op opcode) {
         // 7xkk - Adds the value kk to the value of register Vx.
         case 0x07: return Instruction::ADD_VX_KK;
         case 0x08:
-            switch (opcode & 0x000F) {
+            switch (opcode.low()) {
                 // 8xy0 - Stores the value of register Vy in register Vx.
                 case 0x00: return Instruction::LD_VX_VY;
                 // 8xy1 - Performs a bitwise OR on the values of Vx and Vy.
@@ -107,7 +107,7 @@ Instruction parse(size_op opcode) {
         // Dxyn - Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
         case 0x0D: return Instruction::DRW;
         case 0x0E:
-            switch (opcode & 0x00FF) {
+            switch (opcode.byte()) {
                 // Ex9E - Skip instruction if key with the value of Vx is pressed.
                 case 0x9E: return Instruction::SKP;
                 // ExA1 - Skip instruction if key with the value of Vx is not pressed.
@@ -116,7 +116,7 @@ Instruction parse(size_op opcode) {
                 default: return Instruction::UNKNOWN;
             }
         case 0x0F:
-            switch (opcode & 0x00FF) {
+            switch (opcode.byte()) {
                 // Fx07 - Set Vx = delay timer value.
                 case 0x07: return Instruction::LD_VX_DT;
                 // Fx0A - Wait for a key press, store the value of the key in Vx.
