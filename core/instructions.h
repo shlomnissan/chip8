@@ -32,84 +32,84 @@ void CALL(Opcode in, Cpu *cpu) {
 
 // 3xkk - Skip next instruction if Vx = kk.
 void SE_VX_KK(Opcode in, Cpu *cpu) {
-    if (cpu->registers[in.x()] == in.byte()) {
+    if (cpu->regs[in.x()] == in.byte()) {
         cpu->pc += 2;
     }
 }
 
     // 4xkk - Skip next instruction if Vx != kk.
 void SNE_VX_KK(Opcode in, Cpu *cpu) {
-    if (cpu->registers[in.x()] != in.byte()) {
+    if (cpu->regs[in.x()] != in.byte()) {
         cpu->pc += 2;
     }
 }
 
 // 5xy0 - Skip next instruction if Vx = Vy.
 void SE_VX_VY(Opcode in, Cpu *cpu) {
-    if (cpu->registers[in.x()] == cpu->registers[in.y()]) {
+    if (cpu->regs[in.x()] == cpu->regs[in.y()]) {
         cpu->pc += 2;
     }
 }
 
 // 6xkk - The interpreter puts the value kk into register Vx.
 void LD_VX_KK(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] = in.byte();
+    cpu->regs[in.x()] = in.byte();
 }
 
 // 7xkk - Adds the value kk to the value of register Vx.
 void ADD_VX_KK(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] += in.byte();
+    cpu->regs[in.x()] += in.byte();
 }
 
 // 8xy0 - Stores the value of register Vy in register Vx.
 void LD_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] = cpu->registers[in.y()];
+    cpu->regs[in.x()] = cpu->regs[in.y()];
 }
 
 // 8xy1 - Performs a bitwise OR on the values of Vx and Vy.
 void OR_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] |= cpu->registers[in.y()];
+    cpu->regs[in.x()] |= cpu->regs[in.y()];
 }
 
 // 8xy2 - Performs a bitwise AND on the values of Vx and Vy.
 void AND_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] &= cpu->registers[in.y()];
+    cpu->regs[in.x()] &= cpu->regs[in.y()];
 }
 
 // 8xy3 - Performs a bitwise exclusive OR on the values of Vx and Vy.
 void XOR_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[in.x()] ^= cpu->registers[in.y()];
+    cpu->regs[in.x()] ^= cpu->regs[in.y()];
 }
 
 // 8xy4 - Set Vx = Vx + Vy, set VF = carry.
 void ADD_VX_VY(Opcode in, Cpu *cpu) {
-    uint16_t sum = cpu->registers[in.x()] + cpu->registers[in.y()];
-    cpu->registers[0x0F] = sum > 0xFF ? 1 : 0;
-    cpu->registers[in.x()] = sum & 0xFF;
+    uint16_t sum = cpu->regs[in.x()] + cpu->regs[in.y()];
+    cpu->regs[0x0F] = sum > 0xFF ? 1 : 0;
+    cpu->regs[in.x()] = sum & 0xFF;
 }
 
 // 8xy5 - Set Vx = Vx - Vy, set VF = NOT borrow.
 void SUB_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[in.x()] > cpu->registers[in.y()] ? 1 : 0;
-    cpu->registers[in.x()] -= cpu->registers[in.y()];
+    cpu->regs[0x0F] = cpu->regs[in.x()] > cpu->regs[in.y()] ? 1 : 0;
+    cpu->regs[in.x()] -= cpu->regs[in.y()];
 }
 
 // 8xy6 - Set Vx = Vx SHR 1.
 void SHR_VX(Opcode in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[in.x()] & 0x01;
-    cpu->registers[in.x()] >>= 1;
+    cpu->regs[0x0F] = cpu->regs[in.x()] & 0x01;
+    cpu->regs[in.x()] >>= 1;
 }
 
 // 8xy7 - Set Vx = Vy - Vx, set VF = NOT borrow.
 void SUBN_VX_VY(Opcode in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[in.y()] > cpu->registers[in.x()] ? 1 : 0;
-    cpu->registers[in.x()] = cpu->registers[in.y()] - cpu->registers[in.x()];
+    cpu->regs[0x0F] = cpu->regs[in.y()] > cpu->regs[in.x()] ? 1 : 0;
+    cpu->regs[in.x()] = cpu->regs[in.y()] - cpu->regs[in.x()];
 }
 
 // 8xyE - Set Vx = Vx SHL 1.
 void SHL_VX(Opcode in, Cpu *cpu) {
-    cpu->registers[0x0F] = cpu->registers[in.x()] >> 7;
-    cpu->registers[in.x()] <<= 1;
+    cpu->regs[0x0F] = cpu->regs[in.x()] >> 7;
+    cpu->regs[in.x()] <<= 1;
 }
 
 // 9xy0 - Skip next instruction if Vx != Vy.
@@ -182,12 +182,12 @@ void LD_B_VX(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
-// Fx55 - Store registers V0 through Vx in memory starting at location I.
+// Fx55 - Store regs V0 through Vx in memory starting at location I.
 void LD_I_VX(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }
 
-// Fx65 - Read registers V0 through Vx from memory starting at location I.
+// Fx65 - Read regs V0 through Vx from memory starting at location I.
 void LD_VX_I(Opcode in, Cpu *cpu) {
     // TODO: impl.
 }

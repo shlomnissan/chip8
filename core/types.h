@@ -10,7 +10,7 @@
 namespace c8 {
 
 struct Cpu {
-    std::array<uint8_t, 0x10> registers = {0};
+    std::array<uint8_t, 0x10> regs = {0};
     std::array<uint16_t, 0x10> stack = {0};
 
     uint16_t I = {0};

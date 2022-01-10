@@ -11,7 +11,7 @@ using namespace c8;
 void Chip8::Reset() {
     ram.Reset();
     program_loaded = false;
-    cpu.registers = {0};
+    cpu.regs = {0};
     cpu.stack = {0};
     cpu.I = 0;
     cpu.pc = Memory::kStartAddress;
