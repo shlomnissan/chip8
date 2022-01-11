@@ -14,11 +14,12 @@ add_subdirectory(tests)
 set(HEADERS
     emulator.h
     messages.h
-    core/parser.h
     core/chip8.h
-    core/rom.h
     core/display.h
     core/memory.h
+    core/parser.h
+    core/random.h
+    core/rom.h
     core/types.h
     os/window.h
 )
@@ -27,10 +28,10 @@ set(SOURCES
     main.cpp
     emulator.cpp
     core/chip8.cpp
-    core/rom.cpp
-    core/memory.cpp
-    os/window.cpp
     core/instructions.h
+    core/memory.cpp
+    core/rom.cpp
+    os/window.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})

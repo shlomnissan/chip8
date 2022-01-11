@@ -28,7 +28,7 @@ TEST(Parser, Opcodes) {
     EXPECT_EQ(parse(0x8017), SUBN_VX_VY);
     EXPECT_EQ(parse(0x801E), SHL_VX);
     EXPECT_EQ(parse(0x9010), SNE_VX_VY);
-    EXPECT_EQ(parse(0xA111), LD_I);
+    EXPECT_EQ(parse(0xA2B4), LD_I);
     EXPECT_EQ(parse(0xB111), JMP_V0);
     EXPECT_EQ(parse(0xC100), RND);
     EXPECT_EQ(parse(0xD321), DRW);

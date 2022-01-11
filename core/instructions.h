@@ -5,6 +5,7 @@
 #define CHIP8_INSTRUCTIONS_H
 
 #include "display.h"
+#include "random.h"
 #include "types.h"
 
 namespace c8::instruction {
@@ -114,22 +115,24 @@ void SHL_VX(Opcode in, Cpu *cpu) {
 
 // 9xy0 - Skip next instruction if Vx != Vy.
 void SNE_VX_VY(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    if (cpu->regs[in.x()] != cpu->regs[in.y()]) {
+        cpu->pc += 2;
+    }
 }
 
 // Annn - Register I is set to nnn.
 void LD_I(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->I = in.address();
 }
 
 // Bnnn - Program counter is set to nnn plus the value of V0.
 void JP_V0(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->pc = in.address() + cpu->regs[0x00];
 }
 
-// Cxkk - Set Vx = random byte AND kk.
-void RND(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+// Cxkk - Set Vx = random byte AND kk
+void RND(Opcode in, Cpu *cpu, Random *rand) {
+    cpu->regs[in.x()] = (*rand)() & in.byte();
 }
 
 // Dxyn - Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.

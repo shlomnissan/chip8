@@ -7,6 +7,7 @@
 #include "core/instructions.h"
 #include "core/display.h"
 #include "core/types.h"
+#include "mocks.h"
 
 using namespace c8;
 
@@ -225,19 +226,43 @@ TEST(Instruction, SHL_VX) {
 }
 
 TEST(Instruction, SNE_VX_VY) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0x01;
+    cpu.regs[0x01] = 0x01;
+    cpu.regs[0x02] = 0x02;
+
+    // don't skip to next instruction
+    instruction::SNE_VX_VY(0x9010, &cpu);
+    EXPECT_EQ(cpu.pc, 0x00);
+
+    // skip to next instruction
+    instruction::SNE_VX_VY(0x9020, &cpu);
+    EXPECT_EQ(cpu.pc, 0x02);
 }
 
 TEST(Instruction, LD_I) {
-    // TODO: impl.
+    Cpu cpu;
+
+    instruction::LD_I(0xA2B4, &cpu);
+    EXPECT_EQ(cpu.I, 0x02B4);
 }
 
 TEST(Instruction, JP_V0) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0x01;
+
+    instruction::JP_V0(0xB2B4, &cpu);
+    EXPECT_EQ(cpu.pc, 0x02B5);
 }
 
 TEST(Instruction, RND) {
-    // TODO: impl.
+    Cpu cpu;
+
+    MockRand rand;
+    EXPECT_EQ(rand(), 0xB4);
+
+    instruction::RND(0xC00F, &cpu, &rand);
+    EXPECT_EQ(cpu.regs[0x00], 0x04);
 }
 
 TEST(Instruction, DRW) {

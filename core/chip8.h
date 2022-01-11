@@ -9,6 +9,7 @@
 
 #include "memory.h"
 #include "display.h"
+#include "random.h"
 #include "types.h"
 
 namespace c8 {
@@ -25,6 +26,7 @@ private:
     Cpu cpu;
     Memory ram;
     Display display;
+    Random rand;
 
     bool program_loaded = false;
 };

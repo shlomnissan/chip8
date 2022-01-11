@@ -18,6 +18,8 @@ void Chip8::Reset() {
     cpu.sp = 0;
     cpu.t_delay = 0;
     cpu.t_sound = 0;
+
+    rand.seed(time(nullptr));
 }
 
 void Chip8::ReadProgram(std::string_view buffer) {
@@ -58,7 +60,7 @@ void Chip8::Tick() {
         case Instruction::SNE_VX_VY: return SNE_VX_VY(opcode, &cpu);
         case Instruction::LD_I: return LD_I(opcode, &cpu);
         case Instruction::JMP_V0: return JP_V0(opcode, &cpu);
-        case Instruction::RND: return RND(opcode, &cpu);
+        case Instruction::RND: return RND(opcode, &cpu, &rand);
         case Instruction::DRW: return DRW(opcode, &cpu, &display);
         case Instruction::SKP: return SKP(opcode, &cpu);
         case Instruction::SKNP: return SKNP(opcode, &cpu);

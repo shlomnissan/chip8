@@ -25,13 +25,12 @@ struct Opcode {
 
     Opcode(uint16_t opcode): in(opcode) {}
 
-    uint16_t x() { return (in & 0x0F00) >> 8; }
-    uint16_t y() { return (in & 0x00F0) >> 4; }
-    uint16_t byte() { return in & 0x00FF; }
-    uint16_t address() { return in & 0x0FFF; }
-
-    uint16_t high() { return in >> 12; }
-    uint16_t low() { return in & 0x000F; }
+    [[nodiscard]] uint8_t x() const { return (in & 0x0F00) >> 8; }
+    [[nodiscard]] uint8_t y() const { return (in & 0x00F0) >> 4; }
+    [[nodiscard]] uint8_t byte() const { return in & 0x00FF; }
+    [[nodiscard]] uint16_t address() const { return in & 0x0FFF; }
+    [[nodiscard]] uint16_t high() const { return in >> 12; }
+    [[nodiscard]] uint16_t low() const { return in & 0x000F; }
 };
 
 struct bad_opcode : public std::exception {
