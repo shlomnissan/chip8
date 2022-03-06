@@ -2,10 +2,7 @@
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
 #include <gtest/gtest.h>
-#include <algorithm>
-#include <iostream>
 #include <vector>
-#include <memory>
 
 #include "core/instructions.h"
 #include "core/display.h"
