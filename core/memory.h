@@ -45,7 +45,7 @@ public:
     }
 
     void Reset() {
-        std::fill(begin(memory) + kStartAddress, end(memory), 0);
+        memory.fill(0);
     }
 
 private:

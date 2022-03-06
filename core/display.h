@@ -24,7 +24,7 @@ public:
     [[nodiscard]] static constexpr int height() { return kHeight * kScale; }
 
     void ClearScreen() {
-        std::fill(begin(data), end(data), 0);
+        data.fill(0);
     }
 
     uint8_t& operator[](int index) {

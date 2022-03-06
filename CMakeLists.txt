@@ -17,6 +17,7 @@ set(HEADERS
     core/chip8.h
     core/display.h
     core/memory.h
+    core/input.h
     core/parser.h
     core/random.h
     core/rom.h

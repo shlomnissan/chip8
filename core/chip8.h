@@ -9,6 +9,7 @@
 
 #include "memory.h"
 #include "display.h"
+#include "input.h"
 #include "random.h"
 #include "types.h"
 
@@ -18,6 +19,7 @@ class Chip8 {
 public:
     void Reset();
     void ReadProgram(std::string_view buffer);
+    void SetKey(int key, int value);
     void Tick();
 
     [[nodiscard]] bool ProgramLoaded() const;
@@ -26,6 +28,7 @@ private:
     Cpu cpu;
     Memory ram;
     Display display;
+    Input input;
     Random rand;
 
     bool program_loaded = false;

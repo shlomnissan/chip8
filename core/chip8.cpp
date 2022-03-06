@@ -10,6 +10,9 @@ using namespace c8;
 
 void Chip8::Reset() {
     ram.Reset();
+    input.Reset();
+    display.ClearScreen();
+
     program_loaded = false;
     cpu.regs = {0};
     cpu.stack = {0};
@@ -25,6 +28,10 @@ void Chip8::Reset() {
 void Chip8::ReadProgram(std::string_view buffer) {
     ram.SaveProgram(buffer.data());
     program_loaded = true;
+}
+
+void Chip8::SetKey(int key, int value) {
+    input[key] = value;
 }
 
 bool Chip8::ProgramLoaded() const {
