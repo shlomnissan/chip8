@@ -5,6 +5,7 @@
 #define CHIP8_INSTRUCTIONS_H
 
 #include "display.h"
+#include "memory.h"
 #include "random.h"
 #include "types.h"
 
@@ -136,8 +137,23 @@ void RND(Opcode in, Cpu *cpu, Random *rand) {
 }
 
 // Dxyn - Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
-void DRW(Opcode in, Cpu *cpu, Display *display) {
-    // TODO: impl.
+void DRW(Opcode in, Cpu *cpu, Display *display, Memory *memory) {
+    auto& ram = *memory;
+    auto& screen = *display;
+    cpu->regs[0x0F] = 0;
+    for (int y = 0; y < in.low(); ++y) {
+        uint8_t byte_to_draw = ram[cpu->I + y];
+        for (int x = 0; x < 8; ++x) {
+            // draw bits from most-to-least-significant
+            if (byte_to_draw & (0b10000000 >> x)) {
+                uint16_t px = cpu->regs[in.x()] + x;
+                uint16_t py = cpu->regs[in.y()] + y;
+                uint16_t pixel = px + py * Display::kWidth;
+                if (screen[pixel]) cpu->regs[0x0F] = 1;
+                screen[pixel] ^= 1;
+            }
+        }
+    }
 }
 
 // Ex9E - Skip instruction if key with the value of Vx is pressed.

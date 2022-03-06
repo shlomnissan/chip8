@@ -61,7 +61,7 @@ void Chip8::Tick() {
         case Instruction::LD_I: return LD_I(opcode, &cpu);
         case Instruction::JMP_V0: return JP_V0(opcode, &cpu);
         case Instruction::RND: return RND(opcode, &cpu, &rand);
-        case Instruction::DRW: return DRW(opcode, &cpu, &display);
+        case Instruction::DRW: return DRW(opcode, &cpu, &display, &ram);
         case Instruction::SKP: return SKP(opcode, &cpu);
         case Instruction::SKNP: return SKNP(opcode, &cpu);
         case Instruction::LD_VX_DT: return LD_VX_DT(opcode, &cpu);

@@ -3,6 +3,9 @@
 
 #include <gtest/gtest.h>
 #include <algorithm>
+#include <iostream>
+#include <vector>
+#include <memory>
 
 #include "core/instructions.h"
 #include "core/display.h"
@@ -266,7 +269,43 @@ TEST(Instruction, RND) {
 }
 
 TEST(Instruction, DRW) {
-    // TODO: impl.
+    Cpu cpu;
+    Memory memory;
+    Display display;
+
+    // sprite data
+    memory[0x00] = 0x20;
+    memory[0x01] = 0x60;
+    memory[0x02] = 0x20;
+    memory[0x03] = 0x20;
+    memory[0x04] = 0x70;
+
+    // draw sprite into the display
+    instruction::DRW(0xD015, &cpu, &display, &memory);
+
+    // expected output
+    std::vector<std::vector<int>> sprite = {
+        {0, 0, 1, 0},
+        {0, 1, 1, 0},
+        {0, 0, 1, 0},
+        {0, 0, 1, 0},
+        {0, 1, 1, 1},
+    };
+
+    // check that the expected output matches the display
+    for (auto y = 0; y < sprite.size(); ++y) {
+        for (auto x = 0; x < sprite.front().size(); ++x) {
+            auto pixel = display[x + y * 64];
+            EXPECT_EQ(sprite[y][x], pixel);
+        }
+    }
+
+    // ensure there was no collision
+    EXPECT_EQ(cpu.regs[0x0F], 0);
+
+    // check for collision
+    instruction::DRW(0xD015, &cpu, &display, &memory);
+    EXPECT_EQ(cpu.regs[0x0F], 1);
 }
 
 TEST(Instruction, SKP) {

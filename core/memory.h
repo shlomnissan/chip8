@@ -32,12 +32,22 @@ public:
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
-    Memory();
+    Memory() {
+        std::copy(begin(kSprites), end(kSprites), begin(memory));
+    }
 
-    uint8_t& operator[](int index);
+    uint8_t& operator[](int index) {
+        return memory.at(index);
+    }
 
-    void Reset();
-    void SaveProgram(std::string_view source);
+    void SaveProgram(std::string_view source) {
+        std::copy(begin(source), end(source), begin(memory) + kStartAddress);
+    }
+
+    void Reset() {
+        std::fill(begin(memory) + kStartAddress, end(memory), 0);
+    }
+
 private:
     std::array<uint8_t, 0x1000> memory = {0};
 };

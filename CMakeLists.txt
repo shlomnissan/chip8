@@ -29,7 +29,6 @@ set(SOURCES
     emulator.cpp
     core/chip8.cpp
     core/instructions.h
-    core/memory.cpp
     core/rom.cpp
     os/window.cpp
 )

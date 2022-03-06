@@ -35,6 +35,7 @@ void Emulator::Draw() {
 
     for (int y = 0; y < Display::kHeight; ++y) {
         for (int x = 0; x < Display::kWidth; ++x) {
+            // TODO: should be replaced with Chip8 display
             if (display[x + (y * Display::kWidth)]) {
                 window.DrawBlock(x, y, Display::kScale);
             }
