@@ -26,7 +26,9 @@ void Emulator::Start() {
 }
 
 void Emulator::Update() {
-    window.PollEvents();
+    window.PollEvents([](int key, int value) {
+        // TODO: implement
+    });
     chip8.Tick();
 }
 

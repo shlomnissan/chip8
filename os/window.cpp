@@ -18,11 +18,17 @@ bool Window::Initialize(int width, int height, std::string_view title) {
     return true;
 }
 
-void Window::PollEvents() {
+void Window::PollEvents(const std::function<void(int, int)>& on_key) {
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
             running = false;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            on_key(event.key.keysym.sym, 1);
+        }
+        if (event.type == SDL_KEYUP) {
+            on_key(event.key.keysym.sym, 0);
         }
     }
 }

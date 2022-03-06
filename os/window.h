@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 #include <string_view>
+#include <functional>
 
 namespace c8 {
 
@@ -16,7 +17,7 @@ public:
     ~Window();
 
     [[nodiscard]] bool Initialize(int width, int height, std::string_view title);
-    void PollEvents();
+    void PollEvents(const std::function<void(int, int)>& on_key);
     void PresentBackBuffer();
     void ClearScreen();
     void DrawBlock(int x, int y, int scale);
