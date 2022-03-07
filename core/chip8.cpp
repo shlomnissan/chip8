@@ -72,7 +72,7 @@ void Chip8::Tick() {
         case Instruction::SKP: return SKP(opcode, &cpu, &input);
         case Instruction::SKNP: return SKNP(opcode, &cpu, &input);
         case Instruction::LD_VX_DT: return LD_VX_DT(opcode, &cpu);
-        case Instruction::LD_VX_K: return LD_VX_K(opcode, &cpu);
+        case Instruction::LD_VX_K: return LD_VX_K(opcode, &cpu, &input);
         case Instruction::LD_DT: return LD_DT(opcode, &cpu);
         case Instruction::LD_ST: return LD_ST(opcode, &cpu);
         case Instruction::ADD_I_VX: return ADD_I_VX(opcode, &cpu);

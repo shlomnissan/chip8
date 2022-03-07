@@ -343,19 +343,42 @@ TEST(Instruction, SKNP) {
 }
 
 TEST(Instruction, LD_VX_DT) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.t_delay = 0x05;
+
+    instruction::LD_VX_DT(0xF207, &cpu);
+
+    EXPECT_EQ(cpu.regs[0x02], 0x05);
 }
 
 TEST(Instruction, LD_VX_K) {
-    // TODO: impl.
+    Cpu cpu;
+    Input input;
+
+    // no key was pressed, register 5 should be 0
+    instruction::LD_VX_K(0xF50A, &cpu, &input);
+    EXPECT_EQ(cpu.regs[0x05], 0x00);
+
+    // press the 2-key in computer actual keyboard
+    input[0x32] = 1;
+
+    // 2-key was pressed, register 5 should be 2
+    instruction::LD_VX_K(0xF50A, &cpu, &input);
+    EXPECT_EQ(cpu.regs[0x05], 0x02);
 }
 
 TEST(Instruction, LD_DT) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x01] = 0x03;
+    instruction::LD_DT(0xF118, &cpu);
+    EXPECT_EQ(cpu.t_delay, 0x03);
 }
 
 TEST(Instruction, LD_ST) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x01] = 0x03;
+    instruction::LD_ST(0xF118, &cpu);
+    EXPECT_EQ(cpu.t_sound, 0x03);
 }
 
 TEST(Instruction, ADD_I_VX) {

@@ -35,7 +35,7 @@ public:
     }
 
 private:
-    std::array<uint8_t, 0xFF> keyboard;
+    std::array<uint8_t, 0xFF> keyboard = {0};
     std::array<uint8_t, 0x10> keymap = {
         0x78, // X (C8: 0)
         0x31, // 1 (C8: 1)

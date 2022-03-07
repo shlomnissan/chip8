@@ -173,22 +173,26 @@ void SKNP(Opcode in, Cpu *cpu, Input *input) {
 
 // Fx07 - Set Vx = delay timer value.
 void LD_VX_DT(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->regs[in.x()] = cpu->t_delay;
 }
 
 // Fx0A - Wait for a key press, store the value of the key in Vx.
-void LD_VX_K(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void LD_VX_K(Opcode in, Cpu *cpu, Input *input) {
+    for (auto i = 0; i < 0x0F; ++i) {
+        if (input->IsPressed(i)) {
+            cpu->regs[in.x()] = i;
+        }
+    }
 }
 
 // Fx15 - Set delay timer = Vx.
 void LD_DT(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->t_delay = cpu->regs[in.x()];
 }
 
 // Fx18 - Set sound timer = Vx.
 void LD_ST(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->t_sound = cpu->regs[in.x()];
 }
 
 // Fx1E - Set I = I + Vx.
