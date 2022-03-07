@@ -6,6 +6,7 @@
 
 #include "core/instructions.h"
 #include "core/display.h"
+#include "core/input.h"
 #include "core/types.h"
 #include "mocks.h"
 
@@ -306,11 +307,39 @@ TEST(Instruction, DRW) {
 }
 
 TEST(Instruction, SKP) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0x01;
+
+    Input input;
+    instruction::SKP(0xE09E, &cpu, &input);
+
+    // key isn't pressed - don't skip instruction
+    EXPECT_EQ(cpu.pc, 0x00);
+
+    // press the 1-key in computer actual keyboard
+    input[0x31] = 1;
+    instruction::SKP(0xE09E, &cpu, &input);
+
+    // key is pressed - skip instruction
+    EXPECT_EQ(cpu.pc, 0x02);
 }
 
 TEST(Instruction, SKNP) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0x01;
+
+    Input input;
+    instruction::SKNP(0xE09E, &cpu, &input);
+
+    // key isn't pressed - skip instruction
+    EXPECT_EQ(cpu.pc, 0x02);
+
+    // press the 1-key in computer actual keyboard
+    input[0x31] = 1;
+    instruction::SKNP(0xE09E, &cpu, &input);
+
+    // key is pressed - don't skip instruction
+    EXPECT_EQ(cpu.pc, 0x02);
 }
 
 TEST(Instruction, LD_VX_DT) {

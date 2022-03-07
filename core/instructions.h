@@ -5,6 +5,7 @@
 #define CHIP8_INSTRUCTIONS_H
 
 #include "display.h"
+#include "input.h"
 #include "memory.h"
 #include "random.h"
 #include "types.h"
@@ -157,13 +158,17 @@ void DRW(Opcode in, Cpu *cpu, Display *display, Memory *memory) {
 }
 
 // Ex9E - Skip instruction if key with the value of Vx is pressed.
-void SKP(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void SKP(Opcode in, Cpu *cpu, Input *input) {
+    if (input->IsPressed(cpu->regs[in.x()]) == 1) {
+        cpu->pc += 2;
+    }
 }
 
 // ExA1 - Skip instruction if key with the value of Vx is not pressed.
-void SKNP(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void SKNP(Opcode in, Cpu *cpu, Input *input) {
+    if (input->IsPressed(cpu->regs[in.x()]) == 0) {
+        cpu->pc += 2;
+    }
 }
 
 // Fx07 - Set Vx = delay timer value.
