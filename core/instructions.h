@@ -207,8 +207,11 @@ void LD_F_VX(Opcode in, Cpu *cpu) {
 }
 
 // Fx33 - Store BCD representation of Vx in memory locations I, I+1, and I+2.
-void LD_B_VX(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void LD_B_VX(Opcode in, Cpu *cpu, Memory *memory) {
+    auto& ram = *memory;
+    ram[cpu->I] = cpu->regs[in.x()] / 100;
+    ram[cpu->I + 1] = (cpu->regs[in.x()] / 10) % 10;
+    ram[cpu->I + 2] = cpu->regs[in.x()] % 10;
 }
 
 // Fx55 - Store regs V0 through Vx in memory starting at location I.

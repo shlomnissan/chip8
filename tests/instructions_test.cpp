@@ -397,7 +397,15 @@ TEST(Instruction, LD_F_VX) {
 }
 
 TEST(Instruction, LD_B_VX) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0xFE; // 254 decimal
+    cpu.I = 0x50;
+
+    Memory ram;
+    instruction::LD_B_VX(0xF033, &cpu, &ram);
+    EXPECT_EQ(ram[cpu.I], 0x02); // the hundreds digit (2)
+    EXPECT_EQ(ram[cpu.I + 1], 0x05); // the tens digit (5)
+    EXPECT_EQ(ram[cpu.I + 2], 0x04); // the ones digit (4)
 }
 
 TEST(Instruction, LD_I_VX) {

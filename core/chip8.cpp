@@ -77,7 +77,7 @@ void Chip8::Tick() {
         case Instruction::LD_ST: return LD_ST(opcode, &cpu);
         case Instruction::ADD_I_VX: return ADD_I_VX(opcode, &cpu);
         case Instruction::LD_F_VX: return LD_F_VX(opcode, &cpu);
-        case Instruction::LD_B_VX: return LD_B_VX(opcode, &cpu);
+        case Instruction::LD_B_VX: return LD_B_VX(opcode, &cpu, &ram);
         case Instruction::LD_I_VX: return LD_I_VX(opcode, &cpu, &ram);
         case Instruction::LD_VX_I: return LD_VX_I(opcode, &cpu, &ram);
 
