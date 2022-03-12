@@ -33,7 +33,7 @@ public:
     };
 
     Memory() {
-        std::copy(begin(kSprites), end(kSprites), begin(memory));
+        Reset();
     }
 
     uint8_t& operator[](int index) {
@@ -46,6 +46,7 @@ public:
 
     void Reset() {
         memory.fill(0);
+        std::copy(begin(kSprites), end(kSprites), begin(memory));
     }
 
 private:

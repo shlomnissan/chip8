@@ -197,12 +197,13 @@ void LD_ST(Opcode in, Cpu *cpu) {
 
 // Fx1E - Set I = I + Vx.
 void ADD_I_VX(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+    cpu->I += cpu->regs[in.x()];
 }
 
 // Fx29 - Set I = location of sprite for digit Vx.
 void LD_F_VX(Opcode in, Cpu *cpu) {
-   // TODO: impl.
+    // Sprites start at 0x00 and the size of each sprite is 5 bytes
+    cpu->I = cpu->regs[in.x()] * 0x05;
 }
 
 // Fx33 - Store BCD representation of Vx in memory locations I, I+1, and I+2.
@@ -211,15 +212,20 @@ void LD_B_VX(Opcode in, Cpu *cpu) {
 }
 
 // Fx55 - Store regs V0 through Vx in memory starting at location I.
-void LD_I_VX(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void LD_I_VX(Opcode in, Cpu *cpu, Memory *memory) {
+    auto& ram = *memory;
+    for (uint8_t i = 0; i <= in.x(); ++i) {
+        ram[cpu->I + i] = cpu->regs[i];
+    }
 }
 
 // Fx65 - Read regs V0 through Vx from memory starting at location I.
-void LD_VX_I(Opcode in, Cpu *cpu) {
-    // TODO: impl.
+void LD_VX_I(Opcode in, Cpu *cpu, Memory *memory) {
+    auto& ram = *memory;
+    for (uint8_t i = 0; i <= in.x(); ++i) {
+        cpu->regs[i] = ram[cpu->I + i];
+    }
 }
-
 
 }
 

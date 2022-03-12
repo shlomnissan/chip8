@@ -382,11 +382,18 @@ TEST(Instruction, LD_ST) {
 }
 
 TEST(Instruction, ADD_I_VX) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.I = 0x02;
+    cpu.regs[0x00] = 0x02;
+    instruction::ADD_I_VX(0xF01E, &cpu);
+    EXPECT_EQ(cpu.I, 0x04);
 }
 
 TEST(Instruction, LD_F_VX) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.regs[0x00] = 0x0A;
+    instruction::LD_F_VX(0xF029, &cpu);
+    EXPECT_EQ(cpu.I, 0x32);
 }
 
 TEST(Instruction, LD_B_VX) {
@@ -394,9 +401,40 @@ TEST(Instruction, LD_B_VX) {
 }
 
 TEST(Instruction, LD_I_VX) {
-    // TODO: impl.
+    Cpu cpu;
+
+    std::vector<uint8_t> data = {0x0A, 0x10, 0x05};
+    // copy data to registers
+    for (auto i = 0; i < data.size(); ++i) {
+        cpu.regs[i] = data[i];
+    }
+
+    cpu.I = 0x50;
+
+    Memory ram;
+    instruction::LD_I_VX(0xF255, &cpu, &ram);
+
+    // verify the data was copied to memory
+    for (auto i = 0; i < data.size(); ++i) {
+        EXPECT_EQ(ram[cpu.I + i], cpu.regs[i]);
+    }
 }
 
 TEST(Instruction, LD_VX_I) {
-    // TODO: impl.
+    Cpu cpu;
+    cpu.I = 0x50;
+
+    std::vector<uint8_t> data = {0x0A, 0x10, 0x05};
+    Memory ram;
+    // copy data to memory
+    for (auto i = 0; i < data.size(); ++i) {
+        ram[cpu.I + i] = data[i];
+    }
+
+    instruction::LD_VX_I(0xF265, &cpu, &ram);
+
+    // verify the data was copied to registers
+    for (auto i = 0; i < data.size(); ++i) {
+        EXPECT_EQ(cpu.regs[i], ram[cpu.I + i]);
+    }
 }
