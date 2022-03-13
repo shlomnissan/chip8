@@ -20,7 +20,10 @@ public:
     void Reset();
     void ReadProgram(std::string_view buffer);
     void SetKey(int key, int value);
+    void UpdateTimers();
     void Tick();
+
+    uint8_t DisplayAt(int loc);
 
     [[nodiscard]] bool ProgramLoaded() const;
 

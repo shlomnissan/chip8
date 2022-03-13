@@ -38,6 +38,19 @@ bool Chip8::ProgramLoaded() const {
     return program_loaded;
 }
 
+uint8_t Chip8::DisplayAt(int loc) {
+    return display[loc];
+}
+
+void Chip8::UpdateTimers() {
+    if (cpu.t_delay > 0) {
+        --cpu.t_delay;
+    }
+    if (cpu.t_sound > 0) {
+        --cpu.t_sound;
+    }
+}
+
 void Chip8::Tick() {
     Opcode opcode = ram[cpu.pc] << 8 | ram[cpu.pc + 1];
     auto instruction = parse(opcode);

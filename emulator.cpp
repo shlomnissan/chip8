@@ -26,6 +26,7 @@ void Emulator::Start() {
 }
 
 void Emulator::Update() {
+    chip8.UpdateTimers();
     window.PollEvents([&](int key, int value) {
         chip8.SetKey(key, value);
     });
@@ -34,11 +35,9 @@ void Emulator::Update() {
 
 void Emulator::Draw() {
     window.ClearScreen();
-
     for (int y = 0; y < Display::kHeight; ++y) {
         for (int x = 0; x < Display::kWidth; ++x) {
-            // TODO: should be replaced with Chip8 display
-            if (display[x + (y * Display::kWidth)]) {
+            if (chip8.DisplayAt(x + (y * Display::kWidth))) {
                 window.DrawBlock(x, y, Display::kScale);
             }
         }

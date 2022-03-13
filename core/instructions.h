@@ -40,7 +40,7 @@ void SE_VX_KK(Opcode in, Cpu *cpu) {
     }
 }
 
-    // 4xkk - Skip next instruction if Vx != kk.
+// 4xkk - Skip next instruction if Vx != kk.
 void SNE_VX_KK(Opcode in, Cpu *cpu) {
     if (cpu->regs[in.x()] != in.byte()) {
         cpu->pc += 2;
