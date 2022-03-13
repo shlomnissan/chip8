@@ -26,7 +26,7 @@ void Chip8::Reset() {
 }
 
 void Chip8::ReadProgram(std::string_view buffer) {
-    ram.SaveProgram(buffer.data());
+    ram.SaveProgram(buffer);
     program_loaded = true;
 }
 
