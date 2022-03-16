@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "main_loop.h"
 #include "core/chip8.h"
 #include "core/rom.h"
 #include "core/display.h"
@@ -13,7 +14,7 @@
 
 namespace c8 {
 
-class Emulator {
+class Emulator : public MainLoop {
 public:
     [[nodiscard]] bool Initialize();
     void LoadRom(const Rom& rom);
@@ -24,8 +25,8 @@ private:
     Display display;
     Window window;
 
-    void Update();
-    void Draw();
+    void Update() override;
+    void Draw() override;
 };
 
 }

@@ -14,6 +14,7 @@ add_subdirectory(tests)
 set(HEADERS
     emulator.h
     messages.h
+    main_loop.h
     core/chip8.h
     core/display.h
     core/memory.h

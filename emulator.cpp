@@ -19,10 +19,12 @@ void Emulator::LoadRom(const Rom& rom) {
 }
 
 void Emulator::Start() {
-    while (chip8.ProgramLoaded() && window.running) {
-        Update();
-        Draw();
-    }
+    StartMainLoop({
+        .frames_per_sec = 60,
+        .is_running = [&]() {
+            return chip8.ProgramLoaded() && window.running;
+        }
+    });
 }
 
 void Emulator::Update() {
@@ -30,7 +32,9 @@ void Emulator::Update() {
     window.PollEvents([&](int key, int value) {
         chip8.SetKey(key, value);
     });
-    chip8.Tick();
+    for (int i = 0; i < 10; ++i) {
+        chip8.Tick();
+    }
 }
 
 void Emulator::Draw() {
