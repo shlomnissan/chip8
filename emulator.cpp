@@ -5,7 +5,8 @@
 
 using namespace c8;
 
-bool Emulator::Initialize() {
+bool Emulator::Initialize(int cycles_per_sec) {
+    this->cycles_per_sec = cycles_per_sec;
     return window.Initialize(
         Display::width(),
         Display::height(),
@@ -32,7 +33,7 @@ void Emulator::Update() {
     window.PollEvents([&](int key, int value) {
         chip8.SetKey(key, value);
     });
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < cycles_per_sec; ++i) {
         chip8.Tick();
     }
 }

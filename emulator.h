@@ -16,11 +16,13 @@ namespace c8 {
 
 class Emulator : public MainLoop {
 public:
-    [[nodiscard]] bool Initialize();
+    [[nodiscard]] bool Initialize(int cycles_per_sec);
     void LoadRom(const Rom& rom);
     void Start();
 
 private:
+    int cycles_per_sec;
+
     Chip8 chip8;
     Display display;
     Window window;

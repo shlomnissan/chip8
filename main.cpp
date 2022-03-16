@@ -1,15 +1,15 @@
 #include <iostream>
-#include <string_view>
 #include <gflags/gflags.h>
 
 #include "emulator.h"
 #include "messages.h"
 #include "core/rom.h"
 
-DEFINE_string(rom, "", c8::message::InvalidPath);
+DEFINE_string(rom, "", c8::message::FlagRomHelp);
+DEFINE_int32(cycles_per_sec, 10, c8::message::FlagCyclesHelp);
 
 int main(int argc, char** argv) {
-    gflags::SetUsageMessage("chip8 -rom <PATH>");
+    gflags::SetUsageMessage("chip8 -rom roms/invaders.c8 -cycles_per_sec 10");
     gflags::SetVersionString("1.0.0");
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     }
 
     c8::Emulator emulator;
-    if (!emulator.Initialize()) {
+    if (!emulator.Initialize(FLAGS_cycles_per_sec)) {
         std::cerr << c8::message::FailedToInit << '\n';
         return EXIT_FAILURE;
     }
