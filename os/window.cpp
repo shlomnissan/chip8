@@ -3,18 +3,25 @@
 
 #include "window.h"
 
+#include <iostream>
+
 using namespace c8;
 
 bool Window::Initialize(int width, int height, std::string_view title) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+        std::cerr << "SDL Error: " << SDL_GetError() << '\n';
         return false;
     }
 
     SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
-    if (window == nullptr || renderer == nullptr) return false;
-    SDL_SetWindowTitle(window, title.data());
+    if (window == nullptr || renderer == nullptr) {
+        std::cerr << "SDL Error: " << SDL_GetError() << '\n';
+        return false;
+    }
 
+    SDL_SetWindowTitle(window, title.data());
     running = true;
+
     return true;
 }
 
@@ -42,7 +49,7 @@ void Window::ClearScreen() {
     SDL_RenderClear(renderer);
 }
 
-void Window::DrawBlock(int x, int y, int scale) {
+void Window::DrawPixel(int x, int y, int scale) {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_Rect block {x * scale, y * scale, scale, scale};
     SDL_RenderDrawRect(renderer, &block);

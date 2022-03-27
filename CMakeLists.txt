@@ -16,6 +16,7 @@ set(HEADERS
     messages.h
     main_loop.h
     core/chip8.h
+    core/instructions.h
     core/display.h
     core/memory.h
     core/input.h
@@ -23,6 +24,7 @@ set(HEADERS
     core/random.h
     core/rom.h
     core/types.h
+    os/speaker.h
     os/window.h
 )
 
@@ -30,8 +32,8 @@ set(SOURCES
     main.cpp
     emulator.cpp
     core/chip8.cpp
-    core/instructions.h
     core/rom.cpp
+    os/speaker.cpp
     os/window.cpp
 )
 

@@ -20,7 +20,8 @@ public:
     void Reset();
     void ReadProgram(std::string_view buffer);
     void SetKey(int key, int value);
-    void UpdateTimers();
+    void UpdateDelayTimer();
+    bool UpdateSoundTimer();
     void Tick();
 
     uint8_t DisplayAt(int loc);

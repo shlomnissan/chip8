@@ -42,13 +42,17 @@ uint8_t Chip8::DisplayAt(int loc) {
     return display[loc];
 }
 
-void Chip8::UpdateTimers() {
+void Chip8::UpdateDelayTimer() {
     if (cpu.t_delay > 0) {
         --cpu.t_delay;
     }
+}
+
+bool Chip8::UpdateSoundTimer() {
     if (cpu.t_sound > 0) {
         --cpu.t_sound;
     }
+    return cpu.t_sound > 0;
 }
 
 void Chip8::Tick() {

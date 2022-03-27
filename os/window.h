@@ -20,7 +20,7 @@ public:
     void PollEvents(const std::function<void(int, int)>& on_key);
     void PresentBackBuffer();
     void ClearScreen();
-    void DrawBlock(int x, int y, int scale);
+    void DrawPixel(int x, int y, int scale);
 
 private:
     SDL_Window* window = nullptr;

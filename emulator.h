@@ -11,6 +11,7 @@
 #include "core/rom.h"
 #include "core/display.h"
 #include "os/window.h"
+#include "os/speaker.h"
 
 namespace c8 {
 
@@ -21,11 +22,14 @@ public:
     void Start();
 
 private:
+    static constexpr int kFramesPerSec = 60;
+
     int cycles_per_sec;
 
     Chip8 chip8;
     Display display;
     Window window;
+    Speaker speaker;
 
     void Update() override;
     void Draw() override;
