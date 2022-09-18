@@ -8,7 +8,7 @@ namespace c8::message {
 
 constexpr auto FlagRomHelp = "Specify a relative path to a Chip-8 program";
 constexpr auto FlagCyclesHelp = "Set Chip-8 CPU cycles per second";
-constexpr auto InvalidPath = "Specify a valid relative path to a Chip-8 program";
+constexpr auto InvalidPath = "Specify a valid path to a Chip-8 program";
 constexpr auto InvalidRom = "Unable to read Chip-8 program";
 constexpr auto FailedToInit = "Unable to initialize window";
 
