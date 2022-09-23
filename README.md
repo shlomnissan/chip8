@@ -2,7 +2,9 @@
 
 This repository contains an implementation of a Chip-8 interpreter written in modern C++. It supports the complete set of the standard Chip-8 instructions with unit tests but doesn't include support for Super Chip-48.
 
-![invaders](https://user-images.githubusercontent.com/3165988/192060358-899a1318-2888-43eb-9905-a89ece4d6244.gif)
+<div align="center">
+<img alt="invaders" src="https://user-images.githubusercontent.com/3165988/192060358-899a1318-2888-43eb-9905-a89ece4d6244.gif" />
+</div>
 
 ## Dependencies
 All the dependencies are included in this repository as submodules.
