@@ -4,7 +4,7 @@
 #ifndef CHIP8_WINDOW_H
 #define CHIP8_WINDOW_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string_view>
 #include <functional>
 

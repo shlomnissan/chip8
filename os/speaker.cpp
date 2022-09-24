@@ -4,6 +4,7 @@
 #include "speaker.h"
 
 #include <iostream>
+#include <cmath>
 
 bool c8::Speaker::Initialize() {
     SDL_AudioSpec spec;

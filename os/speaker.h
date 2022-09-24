@@ -4,7 +4,7 @@
 #ifndef CHIP8_SPEAKER_H
 #define CHIP8_SPEAKER_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <array>
 
 namespace c8 {
